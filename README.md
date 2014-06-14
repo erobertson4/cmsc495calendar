@@ -1,4 +1,6 @@
-cmsc495calendar
+Group 1 Calendar
 ===============
 
-Repository for CMSC 495 group project
+Repository for Group 1 CMSC 495 Project
+
+This project is a calendar that contains a scheduler for community events.
