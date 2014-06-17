@@ -3,6 +3,9 @@
  */
 package application;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,25 +34,32 @@ public class LoginScreen extends Stage {
     
     Button loginButton = new Button("Login");
     Button newUserButton = new Button("New User?");
+    newUserButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        new NewUserScreen();
+        hide();
+      }
+    });
     
     HBox buttonsBox = new HBox(10);
     buttonsBox.getChildren().addAll(loginButton, newUserButton);
     
-    GridPane loginScreen = new GridPane();
-    loginScreen.setVgap(5);
-    loginScreen.setHgap(10);
+    GridPane loginGridPane = new GridPane();
+    loginGridPane.setAlignment(Pos.CENTER);
+    loginGridPane.setPadding(new Insets(20));
+    loginGridPane.setVgap(5);
+    loginGridPane.setHgap(10);
+    GridPane.setMargin(buttonsBox, new Insets(20, 0, 0, 0));
     
-    loginScreen.add(instructions, 0, 0, 2, 1);
-    loginScreen.add(usernameLabel, 0, 1);
-    loginScreen.add(username, 1, 1);
-    loginScreen.add(passwordLabel, 0, 2);
-    loginScreen.add(password, 1, 2);
-    loginScreen.add(buttonsBox, 0, 3, 2, 1);
+    loginGridPane.add(instructions, 0, 0, 2, 1);
+    loginGridPane.add(usernameLabel, 0, 1);
+    loginGridPane.add(username, 1, 1);
+    loginGridPane.add(passwordLabel, 0, 2);
+    loginGridPane.add(password, 1, 2);
+    loginGridPane.add(buttonsBox, 0, 3, 2, 1);
     
-    
-    Scene scene = new Scene(loginScreen, 300, 150);
-    loginScreen.setAlignment(Pos.CENTER);
-    
+    Scene scene = new Scene(loginGridPane);
     setScene(scene);
     show();
     
