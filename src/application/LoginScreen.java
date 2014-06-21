@@ -26,13 +26,22 @@ public class LoginScreen extends Stage {
   public LoginScreen() {
     Label instructions = new Label("Please enter your username and password.");
     
+    // create login form fields
     Label usernameLabel = new Label("Username");
     TextField username = new TextField();
     
     Label passwordLabel = new Label("Password");
     PasswordField password = new PasswordField();
     
+    // create action buttons
     Button loginButton = new Button("Login");
+    loginButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        // attempt to login with supplied credentials
+      }
+    });
+    
     Button newUserButton = new Button("New User?");
     newUserButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -42,9 +51,11 @@ public class LoginScreen extends Stage {
       }
     });
     
+    // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
     buttonsBox.getChildren().addAll(loginButton, newUserButton);
     
+    // create layout to hold login form fields
     GridPane loginGridPane = new GridPane();
     loginGridPane.setAlignment(Pos.CENTER);
     loginGridPane.setPadding(new Insets(20));
@@ -52,6 +63,7 @@ public class LoginScreen extends Stage {
     loginGridPane.setHgap(10);
     GridPane.setMargin(buttonsBox, new Insets(20, 0, 0, 0));
     
+    // add login form fields to layout
     loginGridPane.add(instructions, 0, 0, 2, 1);
     loginGridPane.add(usernameLabel, 0, 1);
     loginGridPane.add(username, 1, 1);
@@ -59,10 +71,10 @@ public class LoginScreen extends Stage {
     loginGridPane.add(password, 1, 2);
     loginGridPane.add(buttonsBox, 0, 3, 2, 1);
     
+    // create and show screen
     Scene scene = new Scene(loginGridPane);
     setScene(scene);
     show();
-    
   }
   
 }

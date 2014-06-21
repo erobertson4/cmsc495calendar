@@ -25,6 +25,7 @@ public class NewUserScreen extends Stage {
   public NewUserScreen() {
     Label instructionsLabel = new Label("Create an account by filling out this form:");
     
+    // create form fields
     Label firstNameLabel = new Label("First Name");
     TextField firstNameTextField = new TextField();
     
@@ -40,7 +41,15 @@ public class NewUserScreen extends Stage {
     Label passwordLabel2 = new Label("Confirm Password");
     PasswordField password2TextField = new PasswordField();
     
+    // create action buttons
     Button createButton = new Button("Create");
+    createButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        // attempt validation
+      }
+    });
+    
     Button cancelButton = new Button("Cancel");
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -50,9 +59,11 @@ public class NewUserScreen extends Stage {
       }
     });
     
+    // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
     buttonsBox.getChildren().addAll(createButton, cancelButton);
     
+    // create layout to hold form fields
     GridPane newUserGridPane = new GridPane();
     newUserGridPane.setAlignment(Pos.CENTER);
     newUserGridPane.setPadding(new Insets(20));
@@ -61,6 +72,7 @@ public class NewUserScreen extends Stage {
     GridPane.setMargin(instructionsLabel, new Insets(0, 0, 20, 0));
     GridPane.setMargin(buttonsBox, new Insets(20, 0, 0, 0));
     
+    // add form fields to layout
     newUserGridPane.add(instructionsLabel, 0, 0, 2, 1);
     newUserGridPane.add(firstNameLabel, 0, 1);
     newUserGridPane.add(firstNameTextField, 1, 1);
@@ -74,9 +86,8 @@ public class NewUserScreen extends Stage {
     newUserGridPane.add(password2TextField, 1, 5);
     newUserGridPane.add(buttonsBox, 0, 6, 2, 1);
     
-    
+    // create and show screen
     Scene scene = new Scene(newUserGridPane);
-    
     setScene(scene);
     show();
     
