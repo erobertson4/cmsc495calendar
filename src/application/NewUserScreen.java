@@ -4,6 +4,7 @@
 package application;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,27 +23,65 @@ import javafx.stage.Stage;
  */
 public class NewUserScreen extends Stage {
   
+  private TextField firstNameTextField;
+  private TextField lastNameTextField;
+  private TextField usernameTextField;
+  private PasswordField password1TextField;
+  private PasswordField password2TextField;
+  private Button createButton;
+  
   public NewUserScreen() {
     Label instructionsLabel = new Label("Create an account by filling out this form:");
     
     // create form fields
     Label firstNameLabel = new Label("First Name");
-    TextField firstNameTextField = new TextField();
+    firstNameTextField = new TextField();
+    firstNameTextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setCreateButtonEnabled();
+      }
+    });
     
     Label lastNameLabel = new Label("Last Name");
-    TextField lastNameTextField = new TextField();
+    lastNameTextField = new TextField();
+    lastNameTextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setCreateButtonEnabled();
+      }
+    });
     
     Label usernameLabel = new Label("Username");
-    TextField usernameTextField = new TextField();
+    usernameTextField = new TextField();
+    usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setCreateButtonEnabled();
+      }
+    });
     
     Label passwordLabel1 = new Label("Password");
-    PasswordField password1TextField = new PasswordField();
+    password1TextField = new PasswordField();
+    password1TextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setCreateButtonEnabled();
+      }
+    });
     
     Label passwordLabel2 = new Label("Confirm Password");
-    PasswordField password2TextField = new PasswordField();
+    password2TextField = new PasswordField();
+    password2TextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setCreateButtonEnabled();
+      }
+    });
     
     // create action buttons
-    Button createButton = new Button("Create");
+    createButton = new Button("Create");
+    createButton.setDisable(true);
     createButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -90,7 +129,23 @@ public class NewUserScreen extends Stage {
     Scene scene = new Scene(newUserGridPane);
     setScene(scene);
     show();
-    
+  }
+  
+  
+  /**
+   * Only enable create button if there is text in all fields.
+   */
+  private void setCreateButtonEnabled() {
+    if (firstNameTextField.getText().isEmpty() ||
+        lastNameTextField.getText().isEmpty() ||
+        usernameTextField.getText().isEmpty() ||
+        password1TextField.getText().isEmpty() ||
+        password2TextField.getText().isEmpty()) {
+      createButton.setDisable(true);
+    }
+    else {
+      createButton.setDisable(false);
+    }
   }
   
 }

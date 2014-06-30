@@ -4,6 +4,7 @@
 package application;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,20 +22,37 @@ import javafx.stage.Stage;
  *
  */
 public class LoginScreen extends Stage {
+  private TextField usernameTextField;
+  private PasswordField passwordField;
   
+  private Button loginButton;
+  private Button newUserButton;
   
   public LoginScreen() {
     Label instructions = new Label("Please enter your username and password.");
     
     // create login form fields
     Label usernameLabel = new Label("Username");
-    TextField username = new TextField();
+    usernameTextField = new TextField();
+    usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setLoginButtonEnabled();
+      }
+    });
     
     Label passwordLabel = new Label("Password");
-    PasswordField password = new PasswordField();
+    passwordField = new PasswordField();
+    passwordField.setOnKeyReleased(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        setLoginButtonEnabled();
+      }
+    });
     
     // create action buttons
-    Button loginButton = new Button("Login");
+    loginButton = new Button("Login");
+    loginButton.setDisable(true);
     loginButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -42,7 +60,7 @@ public class LoginScreen extends Stage {
       }
     });
     
-    Button newUserButton = new Button("New User?");
+    newUserButton = new Button("New User?");
     newUserButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -66,15 +84,29 @@ public class LoginScreen extends Stage {
     // add login form fields to layout
     loginGridPane.add(instructions, 0, 0, 2, 1);
     loginGridPane.add(usernameLabel, 0, 1);
-    loginGridPane.add(username, 1, 1);
+    loginGridPane.add(usernameTextField, 1, 1);
     loginGridPane.add(passwordLabel, 0, 2);
-    loginGridPane.add(password, 1, 2);
+    loginGridPane.add(passwordField, 1, 2);
     loginGridPane.add(buttonsBox, 0, 3, 2, 1);
     
     // create and show screen
     Scene scene = new Scene(loginGridPane);
     setScene(scene);
     show();
+  }
+  
+  
+  /**
+   * Only enable login button if there is text in both username and password fields.
+   */
+  private void setLoginButtonEnabled() {
+    if (usernameTextField.getText().isEmpty() ||
+        passwordField.getText().isEmpty()) {
+      loginButton.setDisable(true);
+    }
+    else {
+      loginButton.setDisable(false);
+    }
   }
   
 }
