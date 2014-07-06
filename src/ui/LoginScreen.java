@@ -1,7 +1,9 @@
 /**
  * 
  */
-package application;
+package ui;
+
+import java.util.GregorianCalendar;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -21,7 +23,9 @@ import javafx.stage.Stage;
  * @author elijahr
  *
  */
-public class LoginScreen extends Stage {
+public class LoginScreen {
+  private Stage stage; 
+
   private TextField usernameTextField;
   private PasswordField passwordField;
   
@@ -29,6 +33,7 @@ public class LoginScreen extends Stage {
   private Button newUserButton;
   
   public LoginScreen() {
+    stage = new Stage();
     Label instructions = new Label("Please enter your username and password.");
     
     // create login form fields
@@ -52,11 +57,13 @@ public class LoginScreen extends Stage {
     
     // create action buttons
     loginButton = new Button("Login");
-    loginButton.setDisable(true);
+//    loginButton.setDisable(true);
     loginButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
         // attempt to login with supplied credentials
+        new Calendar2(new GregorianCalendar());
+//        new NewEventWindow();
       }
     });
     
@@ -65,7 +72,7 @@ public class LoginScreen extends Stage {
       @Override
       public void handle(ActionEvent event) {
         new NewUserScreen();
-        hide();
+        stage.hide();
       }
     });
     
@@ -91,8 +98,9 @@ public class LoginScreen extends Stage {
     
     // create and show screen
     Scene scene = new Scene(loginGridPane);
-    setScene(scene);
-    show();
+    stage.setScene(scene);
+    stage.setTitle("Login");
+    stage.show();
   }
   
   

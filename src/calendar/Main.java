@@ -1,8 +1,9 @@
 /**
  * 
  */
-package application;
+package calendar;
 
+import ui.LoginScreen;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

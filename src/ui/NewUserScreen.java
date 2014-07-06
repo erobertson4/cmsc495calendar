@@ -1,7 +1,7 @@
 /**
  * 
  */
-package application;
+package ui;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -128,6 +128,7 @@ public class NewUserScreen extends Stage {
     // create and show screen
     Scene scene = new Scene(newUserGridPane);
     setScene(scene);
+    setTitle("Create Account");
     show();
   }
   
