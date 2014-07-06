@@ -57,13 +57,14 @@ public class LoginScreen {
     
     // create action buttons
     loginButton = new Button("Login");
+    // TODO uncomment once we get logging in working.
 //    loginButton.setDisable(true);
     loginButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
         // attempt to login with supplied credentials
+        // TODO make sure it is a genuine login before creating a calendar
         new Calendar(new GregorianCalendar());
-//        new NewEventWindow();
       }
     });
     
