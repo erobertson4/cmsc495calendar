@@ -50,7 +50,7 @@ public class Day {
       @Override
       public void handle(Event event) {
         System.out.println("Day clicked is " +
-            gregorianCalendar.get(GregorianCalendar.MONTH) + " / " +
+            (gregorianCalendar.get(GregorianCalendar.MONTH)+1) + " / " +
             gregorianCalendar.get(GregorianCalendar.DATE) + " / " +
             gregorianCalendar.get(GregorianCalendar.YEAR)
             );
