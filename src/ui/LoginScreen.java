@@ -76,6 +76,16 @@ public class LoginScreen {
       }
     });
     
+    exitButton = new Button("Exit");
+    exitButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        System.exit(0);
+        stage.hide();
+      }
+    });
+    
+    
     // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
     buttonsBox.getChildren().addAll(loginButton, newUserButton);
