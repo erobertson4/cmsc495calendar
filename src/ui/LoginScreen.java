@@ -62,7 +62,7 @@ public class LoginScreen {
       @Override
       public void handle(ActionEvent event) {
         // attempt to login with supplied credentials
-        new Calendar2(new GregorianCalendar());
+        new Calendar(new GregorianCalendar());
 //        new NewEventWindow();
       }
     });

@@ -3,19 +3,15 @@
  */
 package ui;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -24,22 +20,22 @@ import javafx.stage.Stage;
  * @author elijahr
  *
  */
-public class Calendar2 {
+public class Calendar {
   
   private static final String[] MONTHS_OF_YEAR = { "January", "February", "March", "April", "May", "June", "July",
                                                    "August", "September", "October", "November", "December" };
   
-  private static final String[] DAYS_OF_WEEK = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-  
-  private static final int CALENDAR_COLUMNS = 7;
-  private static final int CALENDAR_ROWS    = 6;
-  
-  
   private Stage stage;
+  private Month month;
   
   private Label monthYearDisplayedLabel;
+  private VBox layout;
   
-  public Calendar2(final GregorianCalendar gregorianCalendar) {
+  private ComboBox<String> monthComboBox;
+  private ComboBox<Integer> yearComboBox;
+  
+  
+  public Calendar(final GregorianCalendar gregorianCalendar) {
     
     stage = new Stage();
     
@@ -57,12 +53,12 @@ public class Calendar2 {
     }
     
     // create the month and year combo boxes
-    final ComboBox<String> monthComboBox = new ComboBox<String>();
+    monthComboBox = new ComboBox<String>();
     monthComboBox.getItems().addAll(MONTHS_OF_YEAR);
     monthComboBox.setValue(currentMonthString);
     monthComboBox.setVisibleRowCount(MONTHS_OF_YEAR.length);
     
-    final ComboBox<Integer> yearComboBox = new ComboBox<Integer>();
+    yearComboBox = new ComboBox<Integer>();
     yearComboBox.getItems().addAll(YEARS);
     yearComboBox.setValue(currentYear);
     yearComboBox.setVisibleRowCount(YEARS.length);
@@ -72,7 +68,7 @@ public class Calendar2 {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(yearComboBox.getValue(), convertMonthToInt(monthComboBox.getValue()), 1);
-        new Calendar2(gregorianCalendar);
+        setNewMonth(gregorianCalendar);
       }
     });
     
@@ -80,8 +76,8 @@ public class Calendar2 {
     previousMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        gregorianCalendar.set(currentYear, currentMonth - 1, 1);
-        new Calendar2(gregorianCalendar);
+        gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) - 1);
+        setNewMonth(gregorianCalendar);
       }
     });
     
@@ -89,8 +85,8 @@ public class Calendar2 {
     nextMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        gregorianCalendar.set(currentYear, currentMonth + 1, 1);
-        new Calendar2(gregorianCalendar);
+        gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) + 1);
+        setNewMonth(gregorianCalendar);
       }
     });
 
@@ -98,45 +94,14 @@ public class Calendar2 {
     HBox controlsLayout = new HBox();
     controlsLayout.getChildren().addAll(monthComboBox, yearComboBox, setCalendarButton, previousMonthButton, nextMonthButton);
     
-    List<Day> days = new ArrayList<Day>();
-    
-    int firstDayOfMonth = gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK);
-    System.out.println(firstDayOfMonth);
-    
-    for (int index = 1; index <= CALENDAR_ROWS * CALENDAR_COLUMNS; index++) {
-      days.add(new Day(index-1, new GregorianCalendar(currentYear, currentMonth, index - firstDayOfMonth + 1)));
-    }
-    
-    GridPane calendar = new GridPane();
-    calendar.setHgap(10);
-    calendar.setVgap(10);
-    
-    for (int dayOfWeek = 0; dayOfWeek < CALENDAR_COLUMNS; dayOfWeek++) {
-      Label day = new Label(DAYS_OF_WEEK[dayOfWeek]);
-      HBox box = new HBox();
-      box.setAlignment(Pos.CENTER);
-      box.getChildren().add(day);
-      day.setAlignment(Pos.CENTER);
-      calendar.add(box, dayOfWeek, 0);
-    }
-    
-    int index = 0;
-    
-    for (int row = 1; row <= CALENDAR_ROWS; row++) {
-      for (int column = 0; column < CALENDAR_COLUMNS; column++) {
-        
-        calendar.add(days.get(index).getLayout(), column, row);
-        index++;
-      }
-      
-    }
+    month = new Month(gregorianCalendar);
     
     monthYearDisplayedLabel = new Label(currentMonthString + " " + currentYear);
     monthYearDisplayedLabel.setStyle("-fx-font-size: 20px");
     
-    VBox layout = new VBox();
+    layout = new VBox();
     layout.setPadding(new Insets(10));
-    layout.getChildren().addAll(monthYearDisplayedLabel, controlsLayout, calendar);
+    layout.getChildren().addAll(monthYearDisplayedLabel, controlsLayout, month.getCalendar());
     
     // create and show screen
     Scene scene = new Scene(layout);
@@ -146,6 +111,32 @@ public class Calendar2 {
   }
   
   
+  /**
+   * Update the Calendar with the values of the new month.
+   * @param gregorianCalendar
+   */
+  private void setNewMonth(GregorianCalendar gregorianCalendar) {
+    layout.getChildren().remove(month.getCalendar());
+    
+    int newMonth = gregorianCalendar.get(GregorianCalendar.MONTH);
+    int newYear = gregorianCalendar.get(GregorianCalendar.YEAR);
+    
+    monthYearDisplayedLabel.setText(MONTHS_OF_YEAR[newMonth] + " " + newYear);
+    
+    monthComboBox.setValue(MONTHS_OF_YEAR[newMonth]);
+    yearComboBox.setValue(newYear);
+    
+    month = new Month(gregorianCalendar);
+    layout.getChildren().add(month.getCalendar());
+    layout.getChildren().set(0, monthYearDisplayedLabel);
+  }
+  
+  
+  /**
+   * Convert the String for the month into an int.
+   * @param monthText
+   * @return
+   */
   private int convertMonthToInt(String monthText) {
     int month = -1;
     
