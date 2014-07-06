@@ -76,7 +76,7 @@ public class LoginScreen {
       }
     });
     
-    exitButton = new Button("Exit");
+    Button exitButton = new Button("Exit");
     exitButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -88,7 +88,7 @@ public class LoginScreen {
     
     // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
-    buttonsBox.getChildren().addAll(loginButton, newUserButton);
+    buttonsBox.getChildren().addAll(loginButton, newUserButton, exitButton);
     
     // create layout to hold login form fields
     GridPane loginGridPane = new GridPane();
