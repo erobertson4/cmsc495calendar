@@ -4,17 +4,22 @@
 package ui;
 
 import java.util.GregorianCalendar;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * @author elijahr
@@ -52,6 +57,13 @@ public class Calendar {
       YEARS[index] = startingYear + index;
     }
     
+    //Sets up error dialogs
+    final Stage errorDialog = new Stage();
+    errorDialog.initStyle(StageStyle.UTILITY);
+    final Scene backScene = new Scene(new Group(new Text(25, 25, "Sorry!  The calendar cannot go any further back.")));
+    final Scene nextScene = new Scene(new Group(new Text(25, 25, "Sorry!  The calendar cannot go any further forward.")));
+
+    
     // create the month and year combo boxes
     monthComboBox = new ComboBox<String>();
     monthComboBox.getItems().addAll(MONTHS_OF_YEAR);
@@ -77,7 +89,13 @@ public class Calendar {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) - 1);
-        setNewMonth(gregorianCalendar);
+        //Should stop the user from going back past January 2009; however it doesn't work yet
+        if (gregorianCalendar.MONTH == 0 && gregorianCalendar.YEAR == 2009) {
+            errorDialog.setScene(backScene);
+            errorDialog.show();
+        } else {
+            setNewMonth(gregorianCalendar);
+        }
       }
     });
     
@@ -86,13 +104,33 @@ public class Calendar {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) + 1);
-        setNewMonth(gregorianCalendar);
+        //Should stop the user from going boyond December 2018; however it doesn't work yet
+        if (gregorianCalendar.MONTH == 11 && gregorianCalendar.YEAR == 2018) {
+            errorDialog.setScene(nextScene);
+            errorDialog.show();
+        } else {
+            setNewMonth(gregorianCalendar);
+        }
       }
     });
-
+    
+    StackPane stack = new StackPane();
+    Button logoutButton = new Button("Logout");
+    stack.getChildren().addAll(logoutButton);
+    stack.setAlignment(Pos.CENTER_RIGHT);
+    logoutButton.setOnMouseClicked(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+          LoginScreen ls = new LoginScreen();
+          stage.close();
+      }
+    });
     
     HBox controlsLayout = new HBox();
     controlsLayout.getChildren().addAll(monthComboBox, yearComboBox, setCalendarButton, previousMonthButton, nextMonthButton);
+    //Ensures the logout button stays to the far right of the HBox
+    controlsLayout.getChildren().add(stack);
+    controlsLayout.setHgrow(stack, Priority.ALWAYS);
     
     month = new Month(gregorianCalendar);
     
@@ -109,7 +147,7 @@ public class Calendar {
     stage.setTitle("Calendar");
     stage.show();
   }
-  
+
   
   /**
    * Update the Calendar with the values of the new month.
