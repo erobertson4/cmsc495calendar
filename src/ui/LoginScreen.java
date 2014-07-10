@@ -37,7 +37,7 @@ public class LoginScreen {
     Label instructions = new Label("Please enter your username and password.");
     
     // create login form fields
-    Label usernameLabel = new Label("Username");
+    Label usernameLabel = new Label("Username*");
     usernameTextField = new TextField();
     usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -46,7 +46,7 @@ public class LoginScreen {
       }
     });
     
-    Label passwordLabel = new Label("Password");
+    Label passwordLabel = new Label("Password*");
     passwordField = new PasswordField();
     passwordField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -107,6 +107,7 @@ public class LoginScreen {
     loginGridPane.add(passwordLabel, 0, 2);
     loginGridPane.add(passwordField, 1, 2);
     loginGridPane.add(buttonsBox, 0, 3, 2, 1);
+    buttonsBox.setAlignment(Pos.CENTER);
     
     // create and show screen
     Scene scene = new Scene(loginGridPane);
