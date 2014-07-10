@@ -65,6 +65,7 @@ public class LoginScreen {
         // attempt to login with supplied credentials
         // TODO make sure it is a genuine login before creating a calendar
         new Calendar(new GregorianCalendar());
+        stage.hide();
       }
     });
     
