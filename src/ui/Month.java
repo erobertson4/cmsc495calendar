@@ -17,8 +17,6 @@ import javafx.scene.layout.HBox;
  *
  */
 public class Month {
-
-  private static final String[] DAYS_OF_WEEK = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
   
   private static final int CALENDAR_COLUMNS = 7;
   private static final int CALENDAR_ROWS    = 6;
@@ -43,7 +41,7 @@ public class Month {
     
     // add the days of the week
     for (int dayOfWeek = 0; dayOfWeek < CALENDAR_COLUMNS; dayOfWeek++) {
-      Label day = new Label(DAYS_OF_WEEK[dayOfWeek]);
+      Label day = new Label(Calendar.DAYS_OF_WEEK[dayOfWeek]);
       HBox box = new HBox();
       box.setAlignment(Pos.CENTER);
       box.getChildren().add(day);
