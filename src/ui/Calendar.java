@@ -27,8 +27,9 @@ import javafx.stage.StageStyle;
  */
 public class Calendar {
   
-  private static final String[] MONTHS_OF_YEAR = { "January", "February", "March", "April", "May", "June", "July",
+  public static final String[] MONTHS_OF_YEAR = { "January", "February", "March", "April", "May", "June", "July",
                                                    "August", "September", "October", "November", "December" };
+  public static final String[] DAYS_OF_WEEK = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
   
   private Stage stage;
   private Month month;
