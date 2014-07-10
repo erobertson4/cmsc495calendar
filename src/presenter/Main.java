@@ -1,7 +1,7 @@
 /**
  * 
  */
-package calendar;
+package presenter;
 
 import ui.LoginScreen;
 import javafx.application.Application;
