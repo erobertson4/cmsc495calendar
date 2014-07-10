@@ -34,7 +34,7 @@ public class NewUserScreen extends Stage {
     Label instructionsLabel = new Label("Create an account by filling out this form:");
     
     // create form fields
-    Label firstNameLabel = new Label("First Name");
+    Label firstNameLabel = new Label("First Name*");
     firstNameTextField = new TextField();
     firstNameTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -43,7 +43,7 @@ public class NewUserScreen extends Stage {
       }
     });
     
-    Label lastNameLabel = new Label("Last Name");
+    Label lastNameLabel = new Label("Last Name*");
     lastNameTextField = new TextField();
     lastNameTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -52,7 +52,7 @@ public class NewUserScreen extends Stage {
       }
     });
     
-    Label usernameLabel = new Label("Username");
+    Label usernameLabel = new Label("Username*");
     usernameTextField = new TextField();
     usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -61,7 +61,7 @@ public class NewUserScreen extends Stage {
       }
     });
     
-    Label passwordLabel1 = new Label("Password");
+    Label passwordLabel1 = new Label("Password*");
     password1TextField = new PasswordField();
     password1TextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
@@ -70,7 +70,7 @@ public class NewUserScreen extends Stage {
       }
     });
     
-    Label passwordLabel2 = new Label("Confirm Password");
+    Label passwordLabel2 = new Label("Confirm Password*");
     password2TextField = new PasswordField();
     password2TextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
