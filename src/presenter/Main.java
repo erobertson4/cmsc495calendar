@@ -3,7 +3,8 @@
  */
 package presenter;
 
-import ui.LoginScreen;
+import view.type.LoginScreen;
+import view.ui.LoginScreenView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,8 +20,12 @@ public class Main extends Application {
   
   @Override
   public void start(Stage primaryStage) {
-    new LoginScreen();
     
+    LoginScreen loginScreen = new LoginScreenView();
+    LoginPresenter loginPresenter = new LoginPresenter();
+    loginScreen.setLoginListener(loginPresenter);
+    
+    loginScreen.showLoginScreen();
   }
   
 }
