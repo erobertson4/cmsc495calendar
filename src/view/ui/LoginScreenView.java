@@ -1,9 +1,7 @@
 /**
  * 
  */
-package ui;
-
-import java.util.GregorianCalendar;
+package view.ui;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -18,12 +16,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import view.type.LoginScreen;
 
 /**
  * @author elijahr
  *
  */
-public class LoginScreen {
+public class LoginScreenView implements LoginScreen {
+  
+  private LoginListener listener;
+  
   private Stage stage; 
 
   private TextField usernameTextField;
@@ -32,7 +34,7 @@ public class LoginScreen {
   private Button loginButton;
   private Button newUserButton;
   
-  public LoginScreen() {
+  public LoginScreenView() {
     stage = new Stage();
     Label instructions = new Label("Please enter your username and password.");
     
@@ -42,7 +44,7 @@ public class LoginScreen {
     usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        setLoginButtonEnabled();
+        checkLoginButtonEnabled();
       }
     });
     
@@ -51,20 +53,22 @@ public class LoginScreen {
     passwordField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        setLoginButtonEnabled();
+        checkLoginButtonEnabled();
       }
     });
     
     // create action buttons
     loginButton = new Button("Login");
-    // TODO uncomment once we get logging in working.
+    // TODO For convenience, uncomment once we get logging in working.
 //    loginButton.setDisable(true);
     loginButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
         // attempt to login with supplied credentials
-        // TODO make sure it is a genuine login before creating a calendar
-        new Calendar(new GregorianCalendar());
+        String username = usernameTextField.getText();
+        String password = passwordField.getText();
+        
+        listener.login(username, password);
         stage.hide();
       }
     });
@@ -73,8 +77,8 @@ public class LoginScreen {
     newUserButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        new NewUserScreen();
         stage.hide();
+        listener.showNewUserScreen();
       }
     });
     
@@ -82,8 +86,8 @@ public class LoginScreen {
     exitButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        System.exit(0);
         stage.hide();
+        listener.quit();
       }
     });
     
@@ -109,18 +113,17 @@ public class LoginScreen {
     loginGridPane.add(buttonsBox, 0, 3, 2, 1);
     buttonsBox.setAlignment(Pos.CENTER);
     
-    // create and show screen
+    // create scene
     Scene scene = new Scene(loginGridPane);
     stage.setScene(scene);
     stage.setTitle("Login");
-    stage.show();
   }
   
   
   /**
    * Only enable login button if there is text in both username and password fields.
    */
-  private void setLoginButtonEnabled() {
+  private void checkLoginButtonEnabled() {
     if (usernameTextField.getText().isEmpty() ||
         passwordField.getText().isEmpty()) {
       loginButton.setDisable(true);
@@ -128,6 +131,19 @@ public class LoginScreen {
     else {
       loginButton.setDisable(false);
     }
+  }
+
+
+  @Override
+  public void setLoginListener(LoginListener listener) {
+    this.listener = listener;
+  }
+
+
+
+  @Override
+  public void showLoginScreen() {
+    stage.show();
   }
   
 }
