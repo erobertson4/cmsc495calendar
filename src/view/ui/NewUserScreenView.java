@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ui;
+package view.ui;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -17,11 +17,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import org.controlsfx.dialog.Dialogs;
+
+import view.type.NewUserScreen;
+
 /**
  * @author elijahr
  *
  */
-public class NewUserScreen extends Stage {
+public class NewUserScreenView implements NewUserScreen {
+  
+  private NewUserListener listener;
+  
+  private Stage stage;
   
   private TextField firstNameTextField;
   private TextField lastNameTextField;
@@ -30,7 +38,8 @@ public class NewUserScreen extends Stage {
   private PasswordField password2TextField;
   private Button createButton;
   
-  public NewUserScreen() {
+  public NewUserScreenView() {
+    stage = new Stage();
     Label instructionsLabel = new Label("Create an account by filling out this form:");
     
     // create form fields
@@ -86,6 +95,20 @@ public class NewUserScreen extends Stage {
       @Override
       public void handle(ActionEvent event) {
         // attempt validation
+        if (!password1TextField.getText().equals(password2TextField.getText())) {
+          Dialogs.create()
+            .owner(stage)
+            .title("Invalid Passwords")
+            .message("Passwords did not match!")
+            .showError();
+        }
+        else {
+          String firstName = firstNameTextField.getText();
+          String lastName = lastNameTextField.getText();
+          String username = usernameTextField.getText();
+          String password = password1TextField.getText();
+          listener.createNewUser(firstName, lastName, username, password);
+        }
       }
     });
     
@@ -93,8 +116,9 @@ public class NewUserScreen extends Stage {
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        new LoginScreen();
-        hide();
+        new LoginScreenView();
+        listener.showLoginScreen();
+        stage.hide();
       }
     });
     
@@ -127,9 +151,8 @@ public class NewUserScreen extends Stage {
     
     // create and show screen
     Scene scene = new Scene(newUserGridPane);
-    setScene(scene);
-    setTitle("Create Account");
-    show();
+    stage.setScene(scene);
+    stage.setTitle("Create Account");
   }
   
   
@@ -147,6 +170,18 @@ public class NewUserScreen extends Stage {
     else {
       createButton.setDisable(false);
     }
+  }
+
+
+  @Override
+  public void setNewUserListener(NewUserListener listener) {
+    this.listener = listener;
+  }
+
+
+  @Override
+  public void showNewUserScreen() {
+    stage.show();
   }
   
 }
