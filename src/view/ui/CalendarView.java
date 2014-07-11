@@ -1,9 +1,10 @@
 /**
  * 
  */
-package ui;
+package view.ui;
 
 import java.util.GregorianCalendar;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,12 +21,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.bean.UserBean;
+import view.type.Calendar;
 
 /**
  * @author elijahr
  *
  */
-public class Calendar {
+public class CalendarView implements Calendar {
+  
+  private CalendarListener listener;
   
   public static final String[] MONTHS_OF_YEAR = { "January", "February", "March", "April", "May", "June", "July",
                                                    "August", "September", "October", "November", "December" };
@@ -41,7 +46,7 @@ public class Calendar {
   private ComboBox<Integer> yearComboBox;
   
   
-  public Calendar(final GregorianCalendar gregorianCalendar) {
+  public CalendarView(final UserBean user, final GregorianCalendar gregorianCalendar) {
     
     stage = new Stage();
     
@@ -91,7 +96,7 @@ public class Calendar {
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) - 1);
         //Should stop the user from going back past January 2009; however it doesn't work yet
-        if (gregorianCalendar.MONTH == 0 && gregorianCalendar.YEAR == 2009) {
+        if (gregorianCalendar.get(GregorianCalendar.MONTH) == 0 && gregorianCalendar.get(GregorianCalendar.YEAR) == 2009) {
             errorDialog.setScene(backScene);
             errorDialog.show();
         } else {
@@ -105,8 +110,8 @@ public class Calendar {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) + 1);
-        //Should stop the user from going boyond December 2018; however it doesn't work yet
-        if (gregorianCalendar.MONTH == 11 && gregorianCalendar.YEAR == 2018) {
+        //Should stop the user from going beyond December 2018; however it doesn't work yet
+        if (gregorianCalendar.get(GregorianCalendar.MONTH) == 11 && gregorianCalendar.get(GregorianCalendar.YEAR) == 2018) {
             errorDialog.setScene(nextScene);
             errorDialog.show();
         } else {
@@ -122,8 +127,8 @@ public class Calendar {
     logoutButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-          LoginScreen ls = new LoginScreen();
-          stage.close();
+        stage.close();
+        listener.logout();
       }
     });
     
@@ -131,7 +136,7 @@ public class Calendar {
     controlsLayout.getChildren().addAll(monthComboBox, yearComboBox, setCalendarButton, previousMonthButton, nextMonthButton);
     //Ensures the logout button stays to the far right of the HBox
     controlsLayout.getChildren().add(stack);
-    controlsLayout.setHgrow(stack, Priority.ALWAYS);
+    HBox.setHgrow(stack, Priority.ALWAYS);
     
     month = new Month(gregorianCalendar);
     
@@ -146,7 +151,6 @@ public class Calendar {
     Scene scene = new Scene(layout);
     stage.setScene(scene);
     stage.setTitle("Calendar");
-    stage.show();
   }
 
   
@@ -186,6 +190,18 @@ public class Calendar {
       }
     }
     return month;
+  }
+
+
+  @Override
+  public void setCalendarListener(CalendarListener listener) {
+    this.listener = listener;
+  }
+
+
+  @Override
+  public void showCalendar() {
+    stage.show();
   }
   
 }
