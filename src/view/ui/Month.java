@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ui;
+package view.ui;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -41,7 +41,7 @@ public class Month {
     
     // add the days of the week
     for (int dayOfWeek = 0; dayOfWeek < CALENDAR_COLUMNS; dayOfWeek++) {
-      Label day = new Label(Calendar.DAYS_OF_WEEK[dayOfWeek]);
+      Label day = new Label(CalendarView.DAYS_OF_WEEK[dayOfWeek]);
       HBox box = new HBox();
       box.setAlignment(Pos.CENTER);
       box.getChildren().add(day);
