@@ -127,7 +127,6 @@ public class CalendarView implements Calendar {
     logoutButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        stage.close();
         listener.logout();
       }
     });
@@ -202,6 +201,12 @@ public class CalendarView implements Calendar {
   @Override
   public void showCalendar() {
     stage.show();
+  }
+
+
+  @Override
+  public void hideCalendar() {
+    stage.hide();
   }
   
 }

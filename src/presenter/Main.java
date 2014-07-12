@@ -22,7 +22,7 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     
     LoginScreen loginScreen = new LoginScreenView();
-    LoginPresenter loginPresenter = new LoginPresenter();
+    LoginPresenter loginPresenter = new LoginPresenter(loginScreen);
     loginScreen.setLoginListener(loginPresenter);
     
     loginScreen.showLoginScreen();

@@ -118,7 +118,6 @@ public class NewUserScreenView implements NewUserScreen {
       public void handle(ActionEvent event) {
         new LoginScreenView();
         listener.showLoginScreen();
-        stage.hide();
       }
     });
     
@@ -182,6 +181,12 @@ public class NewUserScreenView implements NewUserScreen {
   @Override
   public void showNewUserScreen() {
     stage.show();
+  }
+
+
+  @Override
+  public void hideNewUserScreen() {
+    stage.hide();
   }
   
 }

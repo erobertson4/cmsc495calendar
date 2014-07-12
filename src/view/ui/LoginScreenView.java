@@ -69,7 +69,6 @@ public class LoginScreenView implements LoginScreen {
         String password = passwordField.getText();
         
         listener.login(username, password);
-        stage.hide();
       }
     });
     
@@ -77,7 +76,6 @@ public class LoginScreenView implements LoginScreen {
     newUserButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        stage.hide();
         listener.showNewUserScreen();
       }
     });
@@ -86,7 +84,6 @@ public class LoginScreenView implements LoginScreen {
     exitButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        stage.hide();
         listener.quit();
       }
     });
@@ -144,6 +141,12 @@ public class LoginScreenView implements LoginScreen {
   @Override
   public void showLoginScreen() {
     stage.show();
+  }
+
+
+  @Override
+  public void hideLoginScreen() {
+    stage.hide();
   }
   
 }

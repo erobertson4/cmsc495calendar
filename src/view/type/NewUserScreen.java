@@ -23,4 +23,6 @@ public interface NewUserScreen {
   
   void showNewUserScreen();
   
+  void hideNewUserScreen();
+  
 }

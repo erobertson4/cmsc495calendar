@@ -23,5 +23,7 @@ public interface LoginScreen {
   
   void showLoginScreen();
   
+  void hideLoginScreen();
+  
   
 }

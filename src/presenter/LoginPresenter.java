@@ -7,8 +7,9 @@ import java.util.GregorianCalendar;
 
 import model.bean.UserBean;
 import view.type.Calendar;
-import view.type.NewUserScreen;
+import view.type.LoginScreen;
 import view.type.LoginScreen.LoginListener;
+import view.type.NewUserScreen;
 import view.ui.CalendarView;
 import view.ui.NewUserScreenView;
 
@@ -18,17 +19,20 @@ import view.ui.NewUserScreenView;
  */
 public class LoginPresenter implements LoginListener {
   
-  public LoginPresenter() {
-    
+  private LoginScreen loginScreen;
+  
+  public LoginPresenter(LoginScreen loginScreen) {
+    this.loginScreen = loginScreen;
   }
 
   @Override
   public void showNewUserScreen() {
     NewUserScreen newUserScreen = new NewUserScreenView();
-    NewUserPresenter newUserPresenter = new NewUserPresenter();
+    NewUserPresenter newUserPresenter = new NewUserPresenter(newUserScreen);
     newUserScreen.setNewUserListener(newUserPresenter);
     
     newUserScreen.showNewUserScreen();
+    loginScreen.hideLoginScreen();
   }
 
   @Override
@@ -39,14 +43,18 @@ public class LoginPresenter implements LoginListener {
     
     // TODO make sure it is a genuine login before creating a calendar
     Calendar calendar = new CalendarView(user, new GregorianCalendar());
-    CalendarPresenter calendarPresenter = new CalendarPresenter();
+    CalendarPresenter calendarPresenter = new CalendarPresenter(calendar);
     calendar.setCalendarListener(calendarPresenter);
     
     calendar.showCalendar();
+    
+    // TODO if login is successful, close the login screen
+    loginScreen.hideLoginScreen();
   }
 
   @Override
   public void quit() {
+    loginScreen.hideLoginScreen();
     System.exit(0);
   }
   

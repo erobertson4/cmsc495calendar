@@ -4,6 +4,7 @@
 package presenter;
 
 import view.type.LoginScreen;
+import view.type.NewUserScreen;
 import view.type.NewUserScreen.NewUserListener;
 import view.ui.LoginScreenView;
 
@@ -13,8 +14,10 @@ import view.ui.LoginScreenView;
  */
 public class NewUserPresenter implements NewUserListener {
   
-  public NewUserPresenter() {
-    
+  private NewUserScreen newUserScreen;
+  
+  public NewUserPresenter(NewUserScreen newUserScreen) {
+    this.newUserScreen = newUserScreen;
   }
 
   @Override
@@ -31,9 +34,10 @@ public class NewUserPresenter implements NewUserListener {
   @Override
   public void showLoginScreen() {
     LoginScreen loginScreen = new LoginScreenView();
-    LoginPresenter loginPresenter = new LoginPresenter();
+    LoginPresenter loginPresenter = new LoginPresenter(loginScreen);
     loginScreen.setLoginListener(loginPresenter);
     
     loginScreen.showLoginScreen();
+    newUserScreen.hideNewUserScreen();
   }
 }

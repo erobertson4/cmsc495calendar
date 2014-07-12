@@ -21,4 +21,6 @@ public interface Calendar {
   
   void showCalendar();
   
+  void hideCalendar();
+  
 }
