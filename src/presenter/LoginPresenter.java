@@ -37,18 +37,18 @@ public class LoginPresenter implements LoginListener {
 
   @Override
   public void login(String username, String password) {
-    //TODO verify there is a user in the DB with the given username and password
+    //TODO [MJ] verify there is a user in the DB with the given username and password
     UserBean user = new UserBean(username, password);
     
     
-    // TODO make sure it is a genuine login before creating a calendar
+    // TODO [MJ] make sure it is a genuine login before creating a calendar
     Calendar calendar = new CalendarView(user, new GregorianCalendar());
     CalendarPresenter calendarPresenter = new CalendarPresenter(calendar);
     calendar.setCalendarListener(calendarPresenter);
     
     calendar.showCalendar();
     
-    // TODO if login is successful, close the login screen
+    // TODO [MJ] if login is successful, close the login screen
     loginScreen.hideLoginScreen();
   }
 

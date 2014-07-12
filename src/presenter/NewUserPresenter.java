@@ -24,10 +24,10 @@ public class NewUserPresenter implements NewUserListener {
   public void createNewUser(String firstName, String lastName, String username, String password) {
     System.out.println("Attempting to create user");
     
-    // TODO see if username exists. If so, indicate this in a dialog box.
+    // TODO [MJ] see if username exists. If so, indicate this in a dialog box.
     
     
-    //TODO If username does not exist, create the account and proceed to Calendar.
+    //TODO [MJ] If username does not exist, create the account and proceed to Calendar.
 //    UserBean newUser = new UserBean(firstName, lastName, username, password);
   }
 
