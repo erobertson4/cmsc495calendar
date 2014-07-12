@@ -34,9 +34,10 @@ public class Month {
     calendar.setVgap(10);
 
     // create a list of 42 days to be displayed in this calendar
-    List<Day> days = new ArrayList<Day>();    
+    List<DayView> days = new ArrayList<DayView>();    
     for (int index = 1; index <= CALENDAR_ROWS * CALENDAR_COLUMNS; index++) {
-      days.add(new Day(currentMonth, new GregorianCalendar(currentYear, currentMonth, index - firstDayOfMonth + 1)));
+      GregorianCalendar date = new GregorianCalendar(currentYear, currentMonth, index - firstDayOfMonth + 1);
+      days.add(new DayView(currentMonth, date));
     }
     
     // add the days of the week
