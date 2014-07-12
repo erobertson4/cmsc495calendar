@@ -4,28 +4,57 @@
 package view.ui;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import model.bean.EventBean;
+import view.type.Day;
 
 /**
  * @author elijahr
  * 
  */
-public class Day {
+public class DayView implements Day {
 
+  private DayListener listener;
+  private final GregorianCalendar gregorianCalendar;
+  
   private VBox layout;
+  private List<EventBean> events;
 
 
-  public Day(int currentMonth, final GregorianCalendar gregorianCalendar) {
+  public DayView(int currentMonth, final GregorianCalendar gregorianCalendar) {
+    
+    this.gregorianCalendar = gregorianCalendar;
     
     Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
-
+    
+    // TODO [ER] I need to finish the linking to get the list of events for a day
+//    listener.getEvents();
+//    
+//    VBox eventsLayout = new VBox(3);
+//    eventsLayout.setStyle("-fx-font-size: 10px");
+//    
+//    for (final EventBean eventBean : events) {
+//      Label eventLabel = new Label(eventBean.getName());
+//      eventLabel.setOnMouseClicked(new EventHandler<Event>() {
+//        @Override
+//        public void handle(Event event) {
+//          listener.showEventScreen(eventBean);
+//        }
+//      });
+//      
+//      eventsLayout.getChildren().add(eventLabel);
+//    }
+    
+    
+    
     layout = new VBox();
-    layout.getChildren().add(dayLabel);
+    layout.getChildren().addAll(dayLabel);
     
     // some initial styling, to complete later
     String style = "-fx-border: 2px solid; -fx-border-color: blue;";
@@ -61,6 +90,24 @@ public class Day {
 
   public VBox getLayout() {
     return layout;
+  }
+
+
+  @Override
+  public void setDayListener(DayListener listener) {
+    this.listener = listener;
+  }
+
+
+  @Override
+  public void setEvents(List<EventBean> events) {
+    this.events = events;
+  }
+
+  
+  @Override
+  public GregorianCalendar getGregorianCalendar() {
+    return gregorianCalendar;
   }
 
 

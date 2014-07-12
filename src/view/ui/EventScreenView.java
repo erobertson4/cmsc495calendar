@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package view.ui;
 
 import javafx.event.ActionEvent;
@@ -16,8 +19,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.bean.EventBean;
+import view.type.EventScreen;
 
-public class NewEventWindow {
+/**
+ * @author elijahr
+ *
+ */
+public class EventScreenView implements EventScreen {
+  
+  private EventListener listener;
+  
   private Stage stage;
   
   private TextField eventTitleTextField;
@@ -34,9 +46,8 @@ public class NewEventWindow {
   
   private Button createButton;
   
-  public NewEventWindow() {
+  public EventScreenView(EventBean event) {
     stage = new Stage();
-    
     
     eventTitleTextField = new TextField();
     eventTitleTextField.setOnKeyReleased(new EventHandler<Event>() {
@@ -155,7 +166,7 @@ public class NewEventWindow {
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        stage.close();
+        listener.hide();
       }
     });
     
@@ -183,7 +194,6 @@ public class NewEventWindow {
     Scene scene = new Scene(layout);
     stage.setScene(scene);
     stage.setTitle("New Event");
-    stage.show();
   }
   
   
@@ -205,6 +215,24 @@ public class NewEventWindow {
     
     boolean isCreateButtonEnabled = isTitle && isDate && isTime;
     createButton.setDisable(!isCreateButtonEnabled);
+  }
+
+
+  @Override
+  public void setEventListener(EventListener listener) {
+    this.listener = listener;
+  }
+
+
+  @Override
+  public void showEventScreen() {
+    stage.show();
+  }
+
+
+  @Override
+  public void hideEventScreen() {
+    stage.hide();
   }
   
 }
