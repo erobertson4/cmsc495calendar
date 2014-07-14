@@ -9,7 +9,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -18,9 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.bean.UserBean;
 import view.type.Calendar;
 
@@ -32,9 +29,12 @@ public class CalendarView implements Calendar {
   
   private CalendarListener listener;
   
+  private GregorianCalendar gregorianCalendar;
+  
   public static final String[] MONTHS_OF_YEAR = { "January", "February", "March", "April", "May", "June", "July",
                                                    "August", "September", "October", "November", "December" };
   public static final String[] DAYS_OF_WEEK = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+  private final Integer[] YEARS;
   
   private Stage stage;
   private Month month;
@@ -45,8 +45,13 @@ public class CalendarView implements Calendar {
   private ComboBox<String> monthComboBox;
   private ComboBox<Integer> yearComboBox;
   
+  private Button previousMonthButton;
+  private Button nextMonthButton;
+  
   
   public CalendarView(final UserBean user, final GregorianCalendar gregorianCalendar) {
+    
+    this.gregorianCalendar = gregorianCalendar;
     
     stage = new Stage();
     
@@ -58,17 +63,10 @@ public class CalendarView implements Calendar {
     
     // calculate the years to be displayed in the combo box.
     int startingYear = currentYear - 5;
-    Integer[] YEARS = new Integer[10];
+    YEARS = new Integer[11];
     for (int index = 0; index < YEARS.length; index++) {
       YEARS[index] = startingYear + index;
     }
-    
-    //Sets up error dialogs
-    final Stage errorDialog = new Stage();
-    errorDialog.initStyle(StageStyle.UTILITY);
-    final Scene backScene = new Scene(new Group(new Text(25, 25, "Sorry!  The calendar cannot go any further back.")));
-    final Scene nextScene = new Scene(new Group(new Text(25, 25, "Sorry!  The calendar cannot go any further forward.")));
-
     
     // create the month and year combo boxes
     monthComboBox = new ComboBox<String>();
@@ -90,33 +88,23 @@ public class CalendarView implements Calendar {
       }
     });
     
-    Button previousMonthButton = new Button("<<");
+    previousMonthButton = new Button("<<");
     previousMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) - 1);
-        //Should stop the user from going back past January 2009; however it doesn't work yet
-        if (gregorianCalendar.get(GregorianCalendar.MONTH) == 0 && gregorianCalendar.get(GregorianCalendar.YEAR) == 2009) {
-            errorDialog.setScene(backScene);
-            errorDialog.show();
-        } else {
-            setNewMonth(gregorianCalendar);
-        }
+        setNewMonth(gregorianCalendar);
+        setNavigationControls();
       }
     });
     
-    Button nextMonthButton = new Button(">>");
+    nextMonthButton = new Button(">>");
     nextMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
         gregorianCalendar.set(GregorianCalendar.MONTH, gregorianCalendar.get(GregorianCalendar.MONTH) + 1);
-        //Should stop the user from going beyond December 2018; however it doesn't work yet
-        if (gregorianCalendar.get(GregorianCalendar.MONTH) == 11 && gregorianCalendar.get(GregorianCalendar.YEAR) == 2018) {
-            errorDialog.setScene(nextScene);
-            errorDialog.show();
-        } else {
-            setNewMonth(gregorianCalendar);
-        }
+        setNewMonth(gregorianCalendar);
+        setNavigationControls();
       }
     });
     
@@ -189,6 +177,30 @@ public class CalendarView implements Calendar {
       }
     }
     return month;
+  }
+  
+  
+  /**
+   * Determine if the next and previous month buttons should be disabled or enabled.
+   */
+  private void setNavigationControls() {
+    
+    if (gregorianCalendar.get(GregorianCalendar.MONTH) == GregorianCalendar.JANUARY &&
+        gregorianCalendar.get(GregorianCalendar.YEAR) == YEARS[0]) {
+      previousMonthButton.setDisable(true);
+    }
+    else {
+      previousMonthButton.setDisable(false);
+    }
+    
+    if (gregorianCalendar.get(GregorianCalendar.MONTH) == GregorianCalendar.DECEMBER &&
+        gregorianCalendar.get(GregorianCalendar.YEAR) == YEARS[YEARS.length-1]) {
+      nextMonthButton.setDisable(true);
+    }
+    else {
+      nextMonthButton.setDisable(false);
+    }
+    
   }
 
 
