@@ -15,6 +15,11 @@ import model.bean.EventBean;
 import view.type.Day;
 
 /**
+ * GUI class for the Day. Shows the day of the month, and a list of events on
+ * the Day. Each Day knows what month and year it belongs to, so overlapping
+ * Days that belong to a month different from the month displayed will be grayed
+ * out. Weekends and other holidays will be identified as well.
+ * 
  * @author elijahr
  * 
  */
@@ -22,72 +27,73 @@ public class DayView implements Day {
 
   private DayListener listener;
   private final GregorianCalendar gregorianCalendar;
-  
+
   private VBox layout;
   private List<EventBean> events;
 
 
   public DayView(int currentMonth, final GregorianCalendar gregorianCalendar) {
-    
+
     this.gregorianCalendar = gregorianCalendar;
-    
-    Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
-    
-    // TODO [ER] I need to finish the linking to get the list of events for a day
-//    listener.getEvents();
-//    
-//    VBox eventsLayout = new VBox(3);
-//    eventsLayout.setStyle("-fx-font-size: 10px");
-//    
-//    for (final EventBean eventBean : events) {
-//      Label eventLabel = new Label(eventBean.getName());
-//      eventLabel.setOnMouseClicked(new EventHandler<Event>() {
-//        @Override
-//        public void handle(Event event) {
-//          listener.showEventScreen(eventBean);
-//        }
-//      });
-//      
-//      eventsLayout.getChildren().add(eventLabel);
-//    }
-    
-    
-    
+
+    Label dayLabel = new Label(String.valueOf(gregorianCalendar
+        .get(GregorianCalendar.DATE)));
+
+    // TODO [ER] I need to finish the linking to get the list of events for a
+    // day
+    // listener.getEvents();
+    //
+    // VBox eventsLayout = new VBox(3);
+    // eventsLayout.setStyle("-fx-font-size: 10px");
+    //
+    // for (final EventBean eventBean : events) {
+    // Label eventLabel = new Label(eventBean.getName());
+    // eventLabel.setOnMouseClicked(new EventHandler<Event>() {
+    // @Override
+    // public void handle(Event event) {
+    // listener.showEventScreen(eventBean);
+    // }
+    // });
+    //
+    // eventsLayout.getChildren().add(eventLabel);
+    // }
+
     layout = new VBox();
     layout.getChildren().addAll(dayLabel);
-    
+
     // some initial styling, to complete later
     String style = "-fx-border: 2px solid; -fx-border-color: blue;";
-    
+
     int dayOfWeek = gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK);
-    
+
     // identify the weekends
-    if (dayOfWeek == GregorianCalendar.SUNDAY || dayOfWeek == GregorianCalendar.SATURDAY) {
-      style+="-fx-background-color: #E8E8E8;";
+    if (dayOfWeek == GregorianCalendar.SUNDAY
+        || dayOfWeek == GregorianCalendar.SATURDAY) {
+      style += "-fx-background-color: #E8E8E8;";
     }
-    
+
     // shade the overlapping days from the other months
     if (currentMonth != gregorianCalendar.get(GregorianCalendar.MONTH)) {
       dayLabel.setTextFill(Color.web("#A8A8A8"));
     }
-    
+
     layout.setStyle(style);
     layout.setMinSize(80, 80);
     layout.setMaxSize(80, 80);
-    
+
     layout.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        System.out.println("Day clicked is " +
-            (gregorianCalendar.get(GregorianCalendar.MONTH)+1) + " / " +
-            gregorianCalendar.get(GregorianCalendar.DATE) + " / " +
-            gregorianCalendar.get(GregorianCalendar.YEAR)
-            );
+        System.out.println("Day clicked is "
+            + (gregorianCalendar.get(GregorianCalendar.MONTH) + 1) + " / "
+            + gregorianCalendar.get(GregorianCalendar.DATE) + " / "
+            + gregorianCalendar.get(GregorianCalendar.YEAR));
       }
     });
   }
-  
 
+
+  @Override
   public VBox getLayout() {
     return layout;
   }
@@ -104,11 +110,10 @@ public class DayView implements Day {
     this.events = events;
   }
 
-  
+
   @Override
   public GregorianCalendar getGregorianCalendar() {
     return gregorianCalendar;
   }
-
 
 }

@@ -22,11 +22,14 @@ import view.ui.NewUserScreenView;
 
 
 /**
+ * Presenter class for LoginScreen. Controls interaction between this GUI
+ * element and other elements.
+ * 
  * @author elijahr
  *
  */
 public class LoginPresenter implements LoginListener {
-  
+
   private LoginScreen loginScreen;
   private Connection conn;
   private String SQL;
@@ -53,15 +56,17 @@ public class LoginPresenter implements LoginListener {
     this.loginScreen = loginScreen;
   }
 
+
   @Override
   public void showNewUserScreen() {
     NewUserScreen newUserScreen = new NewUserScreenView();
     NewUserPresenter newUserPresenter = new NewUserPresenter(newUserScreen);
     newUserScreen.setNewUserListener(newUserPresenter);
-    
+
     newUserScreen.showNewUserScreen();
     loginScreen.hideLoginScreen();
   }
+
 
   @Override
   public void login(String username, String password) throws NullPointerException {
@@ -197,6 +202,5 @@ public class LoginPresenter implements LoginListener {
     loginScreen.hideLoginScreen();
     System.exit(0);
   }
-  
-  
+
 }

@@ -3,8 +3,10 @@
  */
 package model.bean;
 
-
 /**
+ * Corresponding class to the User table in the database. TODO add more
+ * information
+ * 
  * @author elijahr
  *
  */
