@@ -22,26 +22,33 @@ import org.controlsfx.dialog.Dialogs;
 import view.type.NewUserScreen;
 
 /**
+ * GUI class for the NewUserScreen. Contains five required fields (first name,
+ * last name, username, password, and confirm password). Contains two buttons
+ * (create and cancel). The create button will only be enabled if all five
+ * fields contain input.
+ * 
  * @author elijahr
  *
  */
 public class NewUserScreenView implements NewUserScreen {
-  
+
   private NewUserListener listener;
-  
+
   private Stage stage;
-  
+
   private TextField firstNameTextField;
   private TextField lastNameTextField;
   private TextField usernameTextField;
   private PasswordField password1TextField;
   private PasswordField password2TextField;
   private Button createButton;
-  
+
+
   public NewUserScreenView() {
     stage = new Stage();
-    Label instructionsLabel = new Label("Create an account by filling out this form:");
-    
+    Label instructionsLabel = new Label(
+        "Create an account by filling out this form:");
+
     // create form fields
     Label firstNameLabel = new Label("First Name*");
     firstNameTextField = new TextField();
@@ -51,7 +58,7 @@ public class NewUserScreenView implements NewUserScreen {
         setCreateButtonEnabled();
       }
     });
-    
+
     Label lastNameLabel = new Label("Last Name*");
     lastNameTextField = new TextField();
     lastNameTextField.setOnKeyReleased(new EventHandler<Event>() {
@@ -60,7 +67,7 @@ public class NewUserScreenView implements NewUserScreen {
         setCreateButtonEnabled();
       }
     });
-    
+
     Label usernameLabel = new Label("Username*");
     usernameTextField = new TextField();
     usernameTextField.setOnKeyReleased(new EventHandler<Event>() {
@@ -69,7 +76,7 @@ public class NewUserScreenView implements NewUserScreen {
         setCreateButtonEnabled();
       }
     });
-    
+
     Label passwordLabel1 = new Label("Password*");
     password1TextField = new PasswordField();
     password1TextField.setOnKeyReleased(new EventHandler<Event>() {
@@ -78,7 +85,7 @@ public class NewUserScreenView implements NewUserScreen {
         setCreateButtonEnabled();
       }
     });
-    
+
     Label passwordLabel2 = new Label("Confirm Password*");
     password2TextField = new PasswordField();
     password2TextField.setOnKeyReleased(new EventHandler<Event>() {
@@ -87,7 +94,7 @@ public class NewUserScreenView implements NewUserScreen {
         setCreateButtonEnabled();
       }
     });
-    
+
     // create action buttons
     createButton = new Button("Create");
     createButton.setDisable(true);
@@ -96,11 +103,8 @@ public class NewUserScreenView implements NewUserScreen {
       public void handle(ActionEvent event) {
         // attempt validation
         if (!password1TextField.getText().equals(password2TextField.getText())) {
-          Dialogs.create()
-            .owner(stage)
-            .title("Invalid Passwords")
-            .message("Passwords did not match!")
-            .showError();
+          Dialogs.create().owner(stage).title("Invalid Passwords")
+              .message("Passwords did not match!").showError();
         }
         else {
           String firstName = firstNameTextField.getText();
@@ -111,7 +115,7 @@ public class NewUserScreenView implements NewUserScreen {
         }
       }
     });
-    
+
     Button cancelButton = new Button("Cancel");
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -120,11 +124,11 @@ public class NewUserScreenView implements NewUserScreen {
         listener.showLoginScreen();
       }
     });
-    
+
     // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
     buttonsBox.getChildren().addAll(createButton, cancelButton);
-    
+
     // create layout to hold form fields
     GridPane newUserGridPane = new GridPane();
     newUserGridPane.setAlignment(Pos.CENTER);
@@ -133,7 +137,7 @@ public class NewUserScreenView implements NewUserScreen {
     newUserGridPane.setHgap(10);
     GridPane.setMargin(instructionsLabel, new Insets(0, 0, 20, 0));
     GridPane.setMargin(buttonsBox, new Insets(20, 0, 0, 0));
-    
+
     // add form fields to layout
     newUserGridPane.add(instructionsLabel, 0, 0, 2, 1);
     newUserGridPane.add(firstNameLabel, 0, 1);
@@ -147,23 +151,23 @@ public class NewUserScreenView implements NewUserScreen {
     newUserGridPane.add(passwordLabel2, 0, 5);
     newUserGridPane.add(password2TextField, 1, 5);
     newUserGridPane.add(buttonsBox, 0, 6, 2, 1);
-    
+
     // create and show screen
     Scene scene = new Scene(newUserGridPane);
     stage.setScene(scene);
     stage.setTitle("Create Account");
   }
-  
-  
+
+
   /**
    * Only enable create button if there is text in all fields.
    */
   private void setCreateButtonEnabled() {
-    if (firstNameTextField.getText().isEmpty() ||
-        lastNameTextField.getText().isEmpty() ||
-        usernameTextField.getText().isEmpty() ||
-        password1TextField.getText().isEmpty() ||
-        password2TextField.getText().isEmpty()) {
+    if (firstNameTextField.getText().isEmpty()
+        || lastNameTextField.getText().isEmpty()
+        || usernameTextField.getText().isEmpty()
+        || password1TextField.getText().isEmpty()
+        || password2TextField.getText().isEmpty()) {
       createButton.setDisable(true);
     }
     else {
@@ -188,5 +192,5 @@ public class NewUserScreenView implements NewUserScreen {
   public void hideNewUserScreen() {
     stage.hide();
   }
-  
+
 }

@@ -3,8 +3,10 @@
  */
 package model.bean;
 
-
 /**
+ * Corresponding class to the User table in the database. TODO add more
+ * information
+ * 
  * @author elijahr
  *
  */
@@ -20,14 +22,15 @@ public class UserBean {
   }
 
 
-  public UserBean(String firstName, String lastName, String username, String password) {
+  public UserBean(String firstName, String lastName, String username,
+      String password) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
   }
-  
-  
+
+
   public UserBean(String username, String password) {
     this.username = username;
     this.password = password;
