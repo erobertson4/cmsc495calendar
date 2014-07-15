@@ -10,30 +10,39 @@ package model.bean;
  */
 public class UserBean {
 
+  private int userID;
   private String firstName;
   private String lastName;
   private String username;
   private String password;
 
-
+  // no args constructor
   public UserBean() {
   }
 
-
-  public UserBean(String firstName, String lastName, String username, String password) {
+  // full recordset constructor
+  public UserBean(int userID, String firstName, String lastName, String username, String password) {
+    this.userID = userID;
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
   }
   
-  
+  // min recordset constructor
   public UserBean(String username, String password) {
     this.username = username;
     this.password = password;
   }
 
-
+  public int getUserID() {
+      return userID;
+  }
+  
+  public void setUserID(int userID) {
+      this.userID = userID;
+  }
+  
   public String getFirstName() {
     return firstName;
   }
