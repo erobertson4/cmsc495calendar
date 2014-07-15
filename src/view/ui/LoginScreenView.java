@@ -31,6 +31,7 @@ public class LoginScreenView implements LoginScreen {
   private TextField usernameTextField;
   private PasswordField passwordField;
   
+  
   private Button loginButton;
   private Button newUserButton;
   
@@ -59,8 +60,8 @@ public class LoginScreenView implements LoginScreen {
     
     // create action buttons
     loginButton = new Button("Login");
-    // TODO For convenience, uncomment once we get logging in working.
-//    loginButton.setDisable(true);
+    // [MJ] disables login button until value is entered in both usernameTextField and passwordField 
+    loginButton.setDisable(true);
     loginButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
