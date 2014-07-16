@@ -3,11 +3,11 @@
  */
 package model.bean;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
- * Corresponding class to the Event table in the database.
- * TODO add more information
+ * Corresponding class to the Event table in the database. TODO add more
+ * information
  * 
  * @author elijahr
  *
@@ -15,8 +15,8 @@ import java.util.Date;
 public class EventBean {
 
   private String name;
-  private Date startDateTime;
-  private Date endDateTime;
+  private LocalDateTime startDateTime;
+  private LocalDateTime endDateTime;
   private Boolean allDayIndicator;
   // private Type eventType;
   private UserBean owner;
@@ -37,22 +37,22 @@ public class EventBean {
   }
 
 
-  public Date getStartDateTime() {
+  public LocalDateTime getStartDateTime() {
     return startDateTime;
   }
 
 
-  public void setStartDateTime(Date startDateTime) {
+  public void setStartDateTime(LocalDateTime startDateTime) {
     this.startDateTime = startDateTime;
   }
 
 
-  public Date getEndDateTime() {
+  public LocalDateTime getEndDateTime() {
     return endDateTime;
   }
 
 
-  public void setEndDateTime(Date endDateTime) {
+  public void setEndDateTime(LocalDateTime endDateTime) {
     this.endDateTime = endDateTime;
   }
 
