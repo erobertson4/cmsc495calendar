@@ -3,6 +3,7 @@
  */
 package model.bean;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class EventBean {
 
   private String name;
+  private LocalDate date;
   private LocalDateTime startDateTime;
   private LocalDateTime endDateTime;
   private Boolean allDayIndicator;
@@ -34,6 +36,16 @@ public class EventBean {
 
   public void setName(String name) {
     this.name = name;
+  }
+  
+
+  public LocalDate getDate() {
+    return date;
+  }
+
+
+  public void setDate(LocalDate date) {
+    this.date = date;
   }
 
 
