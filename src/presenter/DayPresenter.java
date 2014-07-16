@@ -6,6 +6,7 @@ package presenter;
 import java.util.GregorianCalendar;
 
 import model.bean.EventBean;
+import model.bean.UserBean;
 import view.type.Day;
 import view.type.Day.DayListener;
 import view.type.EventScreen;
@@ -38,8 +39,8 @@ public class DayPresenter implements DayListener {
 
 
   @Override
-  public void showEventScreen(EventBean eventBean) {
-    EventScreen eventScreen = new EventScreenView(eventBean);
+  public void showEventScreen(EventBean eventBean, UserBean userBean) {
+    EventScreen eventScreen = new EventScreenView(eventBean, userBean);
     EventScreenPresenter eventScreenPresenter = new EventScreenPresenter(
         eventScreen);
     eventScreen.setEventListener(eventScreenPresenter);

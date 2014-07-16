@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.bean.EventBean;
+import model.bean.UserBean;
 import view.type.EventScreen;
 
 /**
@@ -51,7 +52,7 @@ public class EventScreenView implements EventScreen {
   private Button createButton;
 
 
-  public EventScreenView(EventBean event) {
+  public EventScreenView(EventBean event, UserBean user) {
     stage = new Stage();
 
     eventTitleTextField = new TextField();

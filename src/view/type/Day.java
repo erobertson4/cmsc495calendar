@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.scene.layout.VBox;
 import model.bean.EventBean;
+import model.bean.UserBean;
 
 /**
  * Interface to the DayView GUI class the controls the interaction between View
@@ -37,8 +38,10 @@ public interface Day {
      * 
      * @param eventBean
      *          the event whose details will be displayed.
+     * @param userBean
+     *          the user who is opening the EventScreen.
      */
-    void showEventScreen(EventBean eventBean);
+    void showEventScreen(EventBean eventBean, UserBean userBean);
 
   }
 
