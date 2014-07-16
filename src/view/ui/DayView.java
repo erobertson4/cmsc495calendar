@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.bean.EventBean;
+import model.bean.UserBean;
 import view.type.Day;
 
 /**
@@ -27,39 +28,25 @@ public class DayView implements Day {
 
   private DayListener listener;
   private final GregorianCalendar gregorianCalendar;
+  private final UserBean user;
 
+  private VBox eventsLayout;
   private VBox layout;
   private List<EventBean> events;
 
 
-  public DayView(int currentMonth, final GregorianCalendar gregorianCalendar) {
+  public DayView(final UserBean user, int currentMonth, final GregorianCalendar gregorianCalendar) {
 
+    this.user = user;
     this.gregorianCalendar = gregorianCalendar;
 
-    Label dayLabel = new Label(String.valueOf(gregorianCalendar
-        .get(GregorianCalendar.DATE)));
+    Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
 
-    // TODO [ER] I need to finish the linking to get the list of events for a
-    // day
-    // listener.getEvents();
-    //
-    // VBox eventsLayout = new VBox(3);
-    // eventsLayout.setStyle("-fx-font-size: 10px");
-    //
-    // for (final EventBean eventBean : events) {
-    // Label eventLabel = new Label(eventBean.getName());
-    // eventLabel.setOnMouseClicked(new EventHandler<Event>() {
-    // @Override
-    // public void handle(Event event) {
-    // listener.showEventScreen(eventBean);
-    // }
-    // });
-    //
-    // eventsLayout.getChildren().add(eventLabel);
-    // }
+    eventsLayout = new VBox(3);
+    eventsLayout.setStyle("-fx-font-size: 10px");
 
     layout = new VBox();
-    layout.getChildren().addAll(dayLabel);
+    layout.getChildren().addAll(dayLabel, eventsLayout);
 
     // some initial styling, to complete later
     String style = "-fx-border: 2px solid; -fx-border-color: blue;";
@@ -67,8 +54,7 @@ public class DayView implements Day {
     int dayOfWeek = gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK);
 
     // identify the weekends
-    if (dayOfWeek == GregorianCalendar.SUNDAY
-        || dayOfWeek == GregorianCalendar.SATURDAY) {
+    if (dayOfWeek == GregorianCalendar.SUNDAY || dayOfWeek == GregorianCalendar.SATURDAY) {
       style += "-fx-background-color: #E8E8E8;";
     }
 
@@ -84,12 +70,35 @@ public class DayView implements Day {
     layout.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        System.out.println("Day clicked is "
-            + (gregorianCalendar.get(GregorianCalendar.MONTH) + 1) + " / "
-            + gregorianCalendar.get(GregorianCalendar.DATE) + " / "
+        System.out.println("Day clicked is " + (gregorianCalendar.get(GregorianCalendar.MONTH) + 1)
+            + " / " + gregorianCalendar.get(GregorianCalendar.DATE) + " / "
             + gregorianCalendar.get(GregorianCalendar.YEAR));
       }
     });
+  }
+
+
+  /**
+   * Tells the presenter to fetch the events for this day and adds them as
+   * labels to the day.
+   */
+  private void addEvents() {
+    listener.getEvents();
+
+    // only add events if there are some
+    if (events != null) {
+      for (final EventBean eventBean : events) {
+        Label eventLabel = new Label(eventBean.getName());
+        eventLabel.setOnMouseClicked(new EventHandler<Event>() {
+          @Override
+          public void handle(Event event) {
+            // Call to DayPresenter to open the event window for this event and user
+            listener.showEventScreen(eventBean, user);
+          }
+        });
+        eventsLayout.getChildren().add(eventLabel);
+      }
+    }
   }
 
 
@@ -102,6 +111,7 @@ public class DayView implements Day {
   @Override
   public void setDayListener(DayListener listener) {
     this.listener = listener;
+    addEvents();
   }
 
 
