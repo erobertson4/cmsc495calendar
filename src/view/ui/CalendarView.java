@@ -34,14 +34,15 @@ public class CalendarView implements Calendar {
 
   private CalendarListener listener;
 
-  private GregorianCalendar gregorianCalendar;
-
   public static final String[] MONTHS_OF_YEAR = { "January", "February",
       "March", "April", "May", "June", "July", "August", "September",
       "October", "November", "December" };
   public static final String[] DAYS_OF_WEEK = { "Sunday", "Monday", "Tuesday",
       "Wednesday", "Thursday", "Friday", "Saturday" };
   private final Integer[] YEARS;
+
+  private final UserBean user;
+  private GregorianCalendar gregorianCalendar;
 
   private Stage stage;
   private Month month;
@@ -59,6 +60,7 @@ public class CalendarView implements Calendar {
   public CalendarView(final UserBean user,
       final GregorianCalendar gregorianCalendar) {
 
+    this.user = user;
     this.gregorianCalendar = gregorianCalendar;
 
     stage = new Stage();
@@ -140,7 +142,7 @@ public class CalendarView implements Calendar {
     controlsLayout.getChildren().add(stack);
     HBox.setHgrow(stack, Priority.ALWAYS);
 
-    month = new Month(gregorianCalendar);
+    month = new Month(user, gregorianCalendar);
 
     monthYearDisplayedLabel = new Label(currentMonthString + " " + currentYear);
     monthYearDisplayedLabel.setStyle("-fx-font-size: 20px");
@@ -173,7 +175,7 @@ public class CalendarView implements Calendar {
     monthComboBox.setValue(MONTHS_OF_YEAR[newMonth]);
     yearComboBox.setValue(newYear);
 
-    month = new Month(gregorianCalendar);
+    month = new Month(user, gregorianCalendar);
     layout.getChildren().add(month.getCalendar());
     layout.getChildren().set(0, monthYearDisplayedLabel);
   }
