@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import presenter.DayPresenter;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import model.bean.UserBean;
 import view.type.Day;
 
 /**
@@ -27,7 +29,7 @@ public class Month {
   private GridPane calendar;
 
 
-  public Month(GregorianCalendar gregorianCalendar) {
+  public Month(UserBean user, GregorianCalendar gregorianCalendar) {
 
     final int currentMonth = gregorianCalendar.get(GregorianCalendar.MONTH);
     final int currentYear = gregorianCalendar.get(GregorianCalendar.YEAR);
@@ -42,7 +44,13 @@ public class Month {
     for (int index = 1; index <= CALENDAR_ROWS * CALENDAR_COLUMNS; index++) {
       GregorianCalendar date = new GregorianCalendar(currentYear, currentMonth,
           index - firstDayOfMonth + 1);
-      days.add(new DayView(currentMonth, date));
+      
+      // add each Day and its Listener to the list
+      Day day = new DayView(user, currentMonth, date);
+      DayPresenter dayPresenter = new DayPresenter(day);
+      day.setDayListener(dayPresenter);
+      
+      days.add(day);
     }
 
     // add the days of the week
