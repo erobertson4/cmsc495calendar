@@ -8,10 +8,7 @@ import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.bean.UserBean;
 import view.type.Calendar;
 import view.type.LoginScreen;
@@ -47,10 +44,7 @@ public class LoginPresenter implements LoginListener {
 
   
   // create collection object for user data
-  private UserBean userObj;
-  private ArrayList<UserBean> userArray = new ArrayList<UserBean>();
-  private int i = 0;
-  
+  private UserBean newUser;  
   
   public LoginPresenter(LoginScreen loginScreen) {
     this.loginScreen = loginScreen;
@@ -94,24 +88,13 @@ public class LoginPresenter implements LoginListener {
             dbLastName = rset.getString("LASTNAME");
             dbUserName = rset.getString("USERNAME");
             dbPassword = rset.getString("PASSWORD");
-            
-            // create userBean object
-            userObj = new UserBean();
-            
-            // assign database values to userObj
-            userObj.setUserID(dbUserID);
-            userObj.setFirstName(dbFirstName);
-            userObj.setLastName(dbLastName);
-            userObj.setUsername(dbUserName);
-            userObj.setPassword(dbPassword);
-            
-            // assign userObj's to userArray
-            userArray.add(i, userObj);
-            i++; // increase count to iterate through array
-        } // end while loop
+       } // end while loop
         
+        // create userBean object
+        newUser = new UserBean(dbUserID, dbFirstName, dbLastName, 
+                dbUserName, dbPassword);
 
-            showMyCalendar(); // call to method below
+        showMyCalendar(); // call to method below
 
         
         // close all db connections
@@ -122,42 +105,23 @@ public class LoginPresenter implements LoginListener {
     } // end try block
 
     catch(SQLException ex) {
-        //TODO [ER] & [MM] present following message in error dialog box when credentials don't match
-        System.out.println("SQLException: " + ex.getMessage() + "\nError: can not connect to database");
+        System.out.println("SQLException: " + ex.getMessage() 
+                + "\nError: can not connect to database");
         loginScreen.showLoginScreen();
     } // end catch   
+        //fail-all close database resources
         //fail-all close database resources
         finally {    
             try {
                 if(rset != null) rset.close();
-            }
-            catch(SQLException ex) {
-                //TODO  [ER] & [MM] use below to write error to log if needed.
-                //Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-                //TODO  [ER] & [MM] present following message in error dialog box
-                System.out.println("Error: unable to close ResultSet");
-            } // end catch
-            
-            try {
                 if(conn!=null) conn.close();
-            }
-            catch(SQLException ex) {
-                //TODO  [ER] & [MM] use below to write error to log if needed.
-                //Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-                //TODO  [ER] & [MM] present following message in error dialog box
-                System.out.println("Error: unable to close database Connection");
-            } // end catch
-            
-            try {
                 if(stmt != null) stmt.close();
             }
             catch(SQLException ex) {
-                //TODO  [ER] & [MM] use below to write error to log if needed.
-                //Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-                //TODO  [ER] & [MM] present following message in error dialog box
-                System.out.println("Error: unable to close data Statement");
+                System.out.println("Error: An error was detected "
+                        + "while closing the data source!");
             } // end catch
-        } // end finally =============================================================
+        } // end finally ======================================================
     
     
     // ====================================================================
@@ -173,7 +137,7 @@ public class LoginPresenter implements LoginListener {
         if ((dbUserName.equals(username1)) && (dbPassword.equals(password1))) {
             System.out.println("The credentials match the database valued- Proceed!");
             // create calendar           
-            Calendar calendar = new CalendarView(userObj, new GregorianCalendar());
+            Calendar calendar = new CalendarView(newUser, new GregorianCalendar());
             CalendarPresenter calendarPresenter = new CalendarPresenter(calendar);
             calendar.setCalendarListener(calendarPresenter);
     
@@ -188,9 +152,8 @@ public class LoginPresenter implements LoginListener {
     }
     catch(NullPointerException ex) {
         //TODO  [ER] & [MM] use below to write error to log if needed.
-            //Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-            //TODO  [ER] & [MM] present following message in error dialog box
-            System.out.println("An invalid username or password was entered. Please try again." + ex);
+            System.out.println("An invalid username or password was "
+                    + "entered. Please try again." + ex);
             loginScreen.showLoginScreen();
     }
     // ====================================================================
