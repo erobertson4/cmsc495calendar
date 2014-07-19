@@ -3,6 +3,7 @@
  */
 package presenter;
 
+import model.bean.EventBean;
 import view.type.EventScreen;
 import view.type.EventScreen.EventListener;
 
@@ -26,5 +27,17 @@ public class EventScreenPresenter implements EventListener {
   @Override
   public void hide() {
     eventScreen.hideEventScreen();
+  }
+
+
+  @Override
+  public void save(EventBean event) {
+    // [MJ] save the event in the database
+  }
+
+
+  @Override
+  public void delete(EventBean event) {
+    // [MJ] delete the event from the database
   }
 }

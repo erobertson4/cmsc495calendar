@@ -3,6 +3,8 @@
  */
 package view.type;
 
+import model.bean.EventBean;
+
 /**
  * Interface to the EventScreenView GUI class the controls the interaction
  * between View and Presenter.
@@ -24,6 +26,24 @@ public interface EventScreen {
      * Instruct the EventScreen to close itself.
      */
     void hide();
+
+
+    /**
+     * Saves the given event.
+     * 
+     * @param event
+     *          the event to be saved.
+     */
+    void save(EventBean event);
+
+
+    /**
+     * Deletes the given event.
+     * 
+     * @param event
+     *          the event to be deleted.
+     */
+    void delete(EventBean event);
 
   }
 

@@ -40,8 +40,8 @@ public class EventScreenView implements EventScreen {
 
   private Stage stage;
 
-  private TextField eventTitleTextField;
-  private TextArea eventDescriptionTextArea;
+  private TextField titleTextField;
+  private TextArea descriptionTextArea;
   private DatePicker datePicker;
 
   private CheckBox allDayCheckBox;
@@ -55,16 +55,19 @@ public class EventScreenView implements EventScreen {
   private ComboBox<String> endAm_PmSelector;
   private HBox endTimeSelectionLayout;
 
-  private Button okayButton;
+  private Button closeButton;
+  private Button saveButton;
   private Button cancelButton;
   private Button deleteButton;
 
-  private EventBean event;
+  private final EventBean event;
   private boolean isNewEvent;
   private boolean isUsersEvent;
 
+  private final String AM = "AM";
+  private final String PM = "PM";
 
-  public EventScreenView(EventBean event, UserBean user) {
+  public EventScreenView(final EventBean event, UserBean user) {
     stage = new Stage();
 
     // if the event passed in is null, this is a new event
@@ -73,8 +76,8 @@ public class EventScreenView implements EventScreen {
         .equals(user.getUsername()));
     this.event = event;
 
-    eventTitleTextField = new TextField();
-    eventTitleTextField.setOnKeyReleased(new EventHandler<Event>() {
+    titleTextField = new TextField();
+    titleTextField.setOnKeyReleased(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
         setControls();
@@ -128,7 +131,7 @@ public class EventScreenView implements EventScreen {
     });
 
     startAm_PmSelector = new ComboBox<String>();
-    startAm_PmSelector.getItems().addAll("AM", "PM");
+    startAm_PmSelector.getItems().addAll(AM, PM);
     startAm_PmSelector.setValue(startAm_PmSelector.getItems().get(0));
 
     startTimeSelectionLayout = new HBox();
@@ -161,7 +164,7 @@ public class EventScreenView implements EventScreen {
     });
 
     endAm_PmSelector = new ComboBox<String>();
-    endAm_PmSelector.getItems().addAll("AM", "PM");
+    endAm_PmSelector.getItems().addAll(AM, PM);
     endAm_PmSelector.setValue(startAm_PmSelector.getItems().get(0));
 
     endTimeSelectionLayout = new HBox();
@@ -176,22 +179,63 @@ public class EventScreenView implements EventScreen {
     timeSelectorPane.addRow(1, endTimeSelectionLayout);
     timeSelectorPane.add(allDayCheckBox, 1, 0, 1, 2);
 
-    eventDescriptionTextArea = new TextArea();
+    descriptionTextArea = new TextArea();
 
+   /*
+    * +========================================================+
+    * |        Possible Button Arrangements / Scenarios        |
+    * |--------------------------------------------------------|
+    * |        Close              Viewing Someone Else's Event |
+    * |--------------------------------------------------------|
+    * |     Save   Cancel         Creating a New Event         |
+    * |--------------------------------------------------------|
+    * | Save   Cancel   Delete    Viewing Your Event           |
+    * +========================================================+
+    */
+    
     // create action buttons
-    okayButton = new Button("Okay");
-    okayButton.setDisable(true);
-    okayButton.setOnAction(new EventHandler<ActionEvent>() {
+    closeButton = new Button("Close");
+    closeButton.setDisable(true);
+    closeButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
-      public void handle(ActionEvent event) {
-        // TODO attempt validation
+      public void handle(ActionEvent actionEvent) {
+        listener.hide();
+      }
+    });
+    
+    saveButton = new Button("Save");
+    saveButton.setDisable(true);
+    saveButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent actionEvent) {
+        // TODO Still working on this logic, but wanted to get the other code checked
+        // in for you guys.
+//        event.setName(titleTextField.getText());
+//        event.setDate(datePicker.getValue());
+//        event.setAllDayIndicator(allDayCheckBox.isSelected());
+//        event.setDescription(descriptionTextArea.getText());
+//        
+//        if (!event.getAllDayIndicator()) {
+//          
+//          LocalDateTime endDateTime = LocalDateTime.now();
+//          endDateTime.
+//          
+//          if (endAm_PmSelector.getValue().equals(PM))
+//          
+//          event.setEndDateTime(LocalDateTime.of(year, month, dayOfMonth, end, endMinuteSelector.getValue()));
+//        }
+//        
+//        System.out.println(event.getDate());
+//        System.out.println(event.getAllDayIndicator());
+//        
+//        listener.save(event);
       }
     });
 
     cancelButton = new Button("Cancel");
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent actionEvent) {
         listener.hide();
       }
     });
@@ -199,21 +243,25 @@ public class EventScreenView implements EventScreen {
     deleteButton = new Button("Delete");
     deleteButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
-      public void handle(ActionEvent event) {
-        // TODO attempt to delete the event
+      public void handle(ActionEvent actionEvent) {
+        listener.delete(event);
       }
     });
 
     // create layout to hold buttons
     HBox buttonsBox = new HBox(10);
-    buttonsBox.getChildren().add(okayButton);
-
-    if (isNewEvent || isUsersEvent) {
-      buttonsBox.getChildren().add(cancelButton);
+    
+    // someone else's event
+    if (!isNewEvent && !isUsersEvent) {
+      buttonsBox.getChildren().add(closeButton);
     }
-
-    if (isUsersEvent) {
-      buttonsBox.getChildren().add(deleteButton);
+    // new event
+    else if (isNewEvent) {
+      buttonsBox.getChildren().addAll(saveButton, cancelButton);
+    }
+    // your event
+    else if (isUsersEvent) {
+      buttonsBox.getChildren().addAll(saveButton, cancelButton, deleteButton);
     }
 
     int row = 0;
@@ -222,12 +270,12 @@ public class EventScreenView implements EventScreen {
     GridPane eventFieldsLayout = new GridPane();
     eventFieldsLayout.setVgap(5);
     eventFieldsLayout.setHgap(10);
-    eventFieldsLayout.addRow(row++, new Label("Title*"), eventTitleTextField);
+    eventFieldsLayout.addRow(row++, new Label("Title*"), titleTextField);
     eventFieldsLayout.addRow(row++, new Label("Date*"), dateControlsLayout);
     eventFieldsLayout.addRow(row++, new Label("Start Time*"));
     eventFieldsLayout.addRow(row++, new Label("End Time*"));
     eventFieldsLayout.add(timeSelectorPane, 1, row - 2, 1, 2);
-    eventFieldsLayout.addRow(row++, new Label("Description"), eventDescriptionTextArea);
+    eventFieldsLayout.addRow(row++, new Label("Description"), descriptionTextArea);
 
     VBox layout = new VBox(20);
     layout.setPadding(new Insets(20));
@@ -239,8 +287,7 @@ public class EventScreenView implements EventScreen {
     }
 
     // if it is not your event, make all fields uneditable
-    if (!isUsersEvent) {
-      okayButton.setDisable(false);
+    if (!isNewEvent && !isUsersEvent) {
       setEventFieldsUneditable();
     }
     
@@ -264,7 +311,7 @@ public class EventScreenView implements EventScreen {
    * created by someone else.
    */
   private void setEventFieldsUneditable() {
-    eventTitleTextField.setDisable(true);
+    titleTextField.setDisable(true);
     datePicker.setDisable(true);
     startHourSelector.setDisable(true);
     startMinuteSelector.setDisable(true);
@@ -273,7 +320,7 @@ public class EventScreenView implements EventScreen {
     endMinuteSelector.setDisable(true);
     endAm_PmSelector.setDisable(true);
     allDayCheckBox.setDisable(true);
-    eventDescriptionTextArea.setDisable(true);
+    descriptionTextArea.setDisable(true);
   }
 
 
@@ -284,19 +331,19 @@ public class EventScreenView implements EventScreen {
     LocalDateTime startDateTime = event.getStartDateTime();
     LocalDateTime endDateTime = event.getEndDateTime();
     
-    eventTitleTextField.setText(event.getName());
-    eventDescriptionTextArea.setText(event.getDescription());
+    titleTextField.setText(event.getName());
+    descriptionTextArea.setText(event.getDescription());
     
     datePicker.setValue(event.getDate());
 
     if (startDateTime != null) {
       if (startDateTime.getHour() < 11) {
         startHourSelector.setValue(event.getStartDateTime().getHour());
-        startAm_PmSelector.setValue("AM");
+        startAm_PmSelector.setValue(AM);
       }
       else {
         startHourSelector.setValue(event.getStartDateTime().getHour() - 12);
-        startAm_PmSelector.setValue("PM");
+        startAm_PmSelector.setValue(PM);
       }
       startMinuteSelector.setValue(event.getStartDateTime().getMinute());      
     }
@@ -304,11 +351,11 @@ public class EventScreenView implements EventScreen {
     if (endDateTime != null) {
       if (endDateTime.getHour() < 11) {
         endHourSelector.setValue(event.getEndDateTime().getHour());
-        endAm_PmSelector.setValue("AM");
+        endAm_PmSelector.setValue(AM);
       }
       else {
         endHourSelector.setValue(event.getEndDateTime().getHour() - 12);
-        endAm_PmSelector.setValue("PM");
+        endAm_PmSelector.setValue(PM);
       }
       endMinuteSelector.setValue(event.getEndDateTime().getMinute());
     }
@@ -320,7 +367,7 @@ public class EventScreenView implements EventScreen {
 
 
   /**
-   * Determine if the time selectors and Create button should be enabled.
+   * Determine if the time selectors and Save button should be enabled.
    */
   private void setControls() {
     boolean allDayChecked = allDayCheckBox.isSelected();
@@ -328,7 +375,7 @@ public class EventScreenView implements EventScreen {
     startTimeSelectionLayout.setDisable(allDayChecked);
     endTimeSelectionLayout.setDisable(allDayChecked);
 
-    boolean isTitle = (!eventTitleTextField.getText().isEmpty());
+    boolean isTitle = (!titleTextField.getText().isEmpty());
     boolean isDate = (datePicker.getValue() != null);
 
     boolean isStartTime = (startHourSelector.getValue() != null)
@@ -338,7 +385,7 @@ public class EventScreenView implements EventScreen {
     boolean isTime = (allDayChecked || (isStartTime && isEndTime));
 
     boolean isCreateButtonEnabled = isTitle && isDate && isTime;
-    okayButton.setDisable(!isCreateButtonEnabled);
+    saveButton.setDisable(!isCreateButtonEnabled);
   }
 
 
