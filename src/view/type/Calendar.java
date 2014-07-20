@@ -3,6 +3,8 @@
  */
 package view.type;
 
+import model.bean.UserBean;
+
 /**
  * Interface to the CalendarView GUI class that controls the interaction between
  * View and Presenter.
@@ -24,6 +26,11 @@ public interface Calendar {
      * Logout and return to the login screen.
      */
     void logout();
+
+    /**
+     * Open the EventScreen with a new Event.
+     */
+    void createNewEvent(UserBean user);
 
   }
 
