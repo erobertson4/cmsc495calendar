@@ -124,11 +124,12 @@ public class CalendarView implements Calendar {
       }
     });
 
-    Button newEventButton = new Button("New Event");
-    newEventButton.setOnMouseClicked(new EventHandler<Event>() {
+    Button eventButton = new Button("Event");
+    eventButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
-        listener.createNewEvent(user);
+        // Set to open event window
+        // Not implemented yet
       }
     });
 
@@ -145,7 +146,7 @@ public class CalendarView implements Calendar {
 
     HBox controlsLayout = new HBox();
     controlsLayout.getChildren().addAll(monthComboBox, yearComboBox,
-        setCalendarButton, previousMonthButton, nextMonthButton, newEventButton);
+        setCalendarButton, previousMonthButton, nextMonthButton, eventButton);
     // Ensures the logout button stays to the far right of the HBox
     controlsLayout.getChildren().add(stack);
     HBox.setHgrow(stack, Priority.ALWAYS);
