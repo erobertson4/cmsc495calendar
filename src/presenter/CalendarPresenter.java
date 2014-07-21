@@ -3,9 +3,12 @@
  */
 package presenter;
 
+import model.bean.UserBean;
 import view.type.Calendar;
-import view.type.LoginScreen;
 import view.type.Calendar.CalendarListener;
+import view.type.EventScreen;
+import view.type.LoginScreen;
+import view.ui.EventScreenView;
 import view.ui.LoginScreenView;
 
 /**
@@ -33,6 +36,16 @@ public class CalendarPresenter implements CalendarListener {
 
     loginScreen.showLoginScreen();
     calendar.hideCalendar();
+  }
+
+
+  @Override
+  public void createNewEvent(UserBean user) {
+    EventScreen eventScreen = new EventScreenView(null, user);
+    EventScreenPresenter eventScreenPresenter = new EventScreenPresenter(eventScreen);
+    eventScreen.setEventListener(eventScreenPresenter);
+    
+    eventScreen.showEventScreen();
   }
 
 }
