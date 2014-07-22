@@ -144,6 +144,8 @@ public class CalendarView implements Calendar {
     });
 
     HBox controlsLayout = new HBox();
+    controlsLayout.setSpacing(10);
+    controlsLayout.setPadding(new Insets(0, 20, 10, 20));
     controlsLayout.getChildren().addAll(monthComboBox, yearComboBox,
         setCalendarButton, previousMonthButton, nextMonthButton, newEventButton);
     // Ensures the logout button stays to the far right of the HBox
