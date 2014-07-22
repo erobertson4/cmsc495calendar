@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * Starting class of the Calendar application. Launches the application.
  * 
- * Matt's test comment is now a class commment.
+ * Matt's test comment is now a class comment but Elijah is not a good speller.
  * 
  * @author elijahr
  *
