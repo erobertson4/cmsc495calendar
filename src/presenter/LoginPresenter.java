@@ -23,6 +23,7 @@ import view.ui.NewUserScreenView;
  * element and other elements.
  * 
  * @author elijahr
+ * @author mattj
  *
  */
 public class LoginPresenter implements LoginListener {
@@ -151,7 +152,6 @@ public class LoginPresenter implements LoginListener {
         }
     }
     catch(NullPointerException ex) {
-        //TODO  [ER] & [MM] use below to write error to log if needed.
             System.out.println("An invalid username or password was "
                     + "entered. Please try again." + ex);
             loginScreen.showLoginScreen();

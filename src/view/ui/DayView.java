@@ -88,7 +88,7 @@ public class DayView implements Day {
     // only add events if there are some
     if (events != null) {
       for (final EventBean eventBean : events) {
-        Label eventLabel = new Label(eventBean.getName());
+        Label eventLabel = new Label(eventBean.getEventTitle());
         eventLabel.setOnMouseClicked(new EventHandler<Event>() {
           @Override
           public void handle(Event event) {

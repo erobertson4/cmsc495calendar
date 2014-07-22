@@ -24,7 +24,7 @@ import view.ui.CalendarView;
  * element and other elements.
  * 
  * @author elijahr
- * @author Matthew Wigate Jacob
+ * @author mattj
  */
 public class NewUserPresenter implements NewUserListener {
 
@@ -186,6 +186,7 @@ public class NewUserPresenter implements NewUserListener {
     
     
     // confirm new record created in database, create userBean, display loginScreen
+    // [TODO] ER, can we pass this userBean to calendarView for use with creating newEvent
     public void confirmNewUser() {
         
          // connect to data source calling DBConnect.java > connect()
