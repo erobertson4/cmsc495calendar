@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 /**
  * Starting class of the Calendar application. Launches the application.
  * 
- * Matt's test comment is now a class commment. Success at last!
+ * Matt's test comment is now a class comment and a merge has been done.
+ * 
+ * And merge on all fronts is working well.
  * 
  * @author elijahr
  *
