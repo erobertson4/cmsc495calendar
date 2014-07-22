@@ -80,16 +80,19 @@ public class CalendarView implements Calendar {
 
     // create the month and year combo boxes
     monthComboBox = new ComboBox<String>();
+    monthComboBox.setStyle("-fx-background-color: #9FC5C6");
     monthComboBox.getItems().addAll(MONTHS_OF_YEAR);
     monthComboBox.setValue(currentMonthString);
     monthComboBox.setVisibleRowCount(MONTHS_OF_YEAR.length);
 
     yearComboBox = new ComboBox<Integer>();
+    yearComboBox.setStyle("-fx-background-color: #9FC5C6");
     yearComboBox.getItems().addAll(YEARS);
     yearComboBox.setValue(currentYear);
     yearComboBox.setVisibleRowCount(YEARS.length);
 
     Button setCalendarButton = new Button("Set");
+    setCalendarButton.setStyle("-fx-background-color: #9FC5C6");
     setCalendarButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
@@ -101,6 +104,7 @@ public class CalendarView implements Calendar {
     });
 
     previousMonthButton = new Button("<<");
+    previousMonthButton.setStyle("-fx-background-color: #7F9E9E");
     previousMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
@@ -113,6 +117,7 @@ public class CalendarView implements Calendar {
     });
 
     nextMonthButton = new Button(">>");
+    nextMonthButton.setStyle("-fx-background-color: #7F9E9E");
     nextMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
@@ -125,6 +130,7 @@ public class CalendarView implements Calendar {
     });
 
     Button newEventButton = new Button("New Event");
+    newEventButton.setStyle("-fx-background-color: #C2D0D0");
     newEventButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
@@ -134,6 +140,7 @@ public class CalendarView implements Calendar {
 
     StackPane stack = new StackPane();
     Button logoutButton = new Button("Logout");
+    logoutButton.setStyle("-fx-background-color: #FFB2B2");
     stack.getChildren().addAll(logoutButton);
     stack.setAlignment(Pos.CENTER_RIGHT);
     logoutButton.setOnMouseClicked(new EventHandler<Event>() {
