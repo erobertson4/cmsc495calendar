@@ -65,7 +65,7 @@ public class EventScreenPresenter implements EventListener {
 	  EventBean newEvent = event; // get event from EventScreenView > listener.save
 	  
 	  // get start Date
-	  LocalDate eSDate = newEvent.getEventStartDate();
+	  LocalDate eSDate = newEvent.getDate();
 	  // convert LocalDate to util.Date
 	  Instant inst = eSDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 	  java.util.Date sDate = Date.from(inst);
@@ -74,18 +74,18 @@ public class EventScreenPresenter implements EventListener {
 	  
 	  
 	  // convert eventAllDay
-	  eAD = newEvent.getEventAllDay();
+	  eAD = newEvent.getAllDayIndicator();
 	  if (!eAD) {
 		  dbeventAllDay = 0;
 	  } else {
 		  dbeventAllDay = 1;
 	  }
 	  
-	  dbeventTitle = newEvent.getEventTitle();
+	  dbeventTitle = newEvent.getTitle();
 	  dbeventCreatorUserID = 1; // not null value in DB, using value of 1 as default for testing
 	  dbeventStartDate = sqlDate;
 	  allDay = dbeventAllDay;
-	  dbeventMessage = newEvent.getEventMessage();
+	  dbeventMessage = newEvent.getDescription();
 	  String nextVal = "EVENT_SEQ.NEXTVAL";
 
 
@@ -168,14 +168,14 @@ public class EventScreenPresenter implements EventListener {
 	  
 	  
       // [TESTING ONLY - get event values and print to output        
-         System.out.println( "\n"
-         + newEvent.getEventTitle()  + "\n"
-         + newEvent.getEventCreatorUserID() + "\n"
-         + newEvent.getEventStartDate() + "\n"
-         + newEvent.getEventStartTime() + "\n"
-         + newEvent.getEventEndTime() + "\n"
-         + newEvent.getEventAllDay() + "\n"
-         + newEvent.getEventMessage() + "\n\n");
+//         System.out.println( "\n"
+//         + newEvent.getEventTitle()  + "\n"
+//         + newEvent.getEventCreatorUserID() + "\n"
+//         + newEvent.getEventStartDate() + "\n"
+//         + newEvent.getEventStartTime() + "\n"
+//         + newEvent.getEventEndTime() + "\n"
+//         + newEvent.getEventAllDay() + "\n"
+//         + newEvent.getEventMessage() + "\n\n");
   }
 
 

@@ -3,25 +3,21 @@
  */
 package presenter;
 
-import dbConnection.DBConnect;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.time.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+
 import model.bean.EventBean;
 import model.bean.UserBean;
 import view.type.Day;
 import view.type.Day.DayListener;
 import view.type.EventScreen;
 import view.ui.EventScreenView;
+import dbConnection.DBConnect;
 
 /**
  * Presenter class for Day. Controls interaction between this GUI element and
@@ -33,8 +29,6 @@ import view.ui.EventScreenView;
 public class DayPresenter implements DayListener {
 
   private Day day;
-  private UserBean userBean;
- 
   
   // data connection variables
   private Connection conn;
@@ -43,22 +37,19 @@ public class DayPresenter implements DayListener {
   private Statement stmt;
   
   // database value variables
-  private int dbeventID;
-  private String dbeventTitle;
-  private int dbeventTypeID;
-  private int dbeventCreatorUserID;
-  private LocalDate dbeventStartDate;
-  private LocalDateTime dbeventStartTime;
-  private LocalDateTime dbeventEndTime;
-  private Boolean dbeventAllDay;
-  private String dbeventMessage;
-  private String dbeventLocation;
-  private String dbeventAddress;
-  private String dbeventCity;
-  private String dbeventState;
-  private String dbeventZip;
-  private Date dbCreatedDate;
-  private Date dbLastUpdateDate;
+  private int dbId;
+  private String dbTitle;
+  private int dbCreatorId;
+  private LocalDate dbDate;
+  private Boolean dbAllDayIndicator;
+  private int dbStartHour;
+  private int dbStartMinute;
+  private Boolean dbStartAMIndicator;
+  private int dbEndHour;
+  private int dbEndMinute;
+  private Boolean dbEndAMIndicator;
+  private String dbDescription;
+  
   private EventBean newEvent;
   
   public DayPresenter(Day day) {
@@ -69,23 +60,18 @@ public class DayPresenter implements DayListener {
   @Override
   public void getEvents() {
       
-    GregorianCalendar gregorianCalendar = day.getGregorianCalendar();
-
     // ======================================================================
     // retrieve the list of events with the given GregorianCalendar
     // ======================================================================
     
-    ArrayList<EventBean> eventsArray = new ArrayList<EventBean>() {};
+    ArrayList<EventBean> eventsArray = new ArrayList<EventBean>();
     int i = 0; // used to loop through ArrayList in while statement below
-    
-    // convert gregorianCalendar day to LocalDate type
-    LocalDate gCDay = gregorianCalendar.toZonedDateTime().toLocalDate();
     
     // convert LocalDate type to Date type for use in query where clause
      /*
      * +=========================================================================+ 
      *     everything works fine up to this point. the gregorianCalendar variable
-     *     must match the format type in the databse in order to use it in the 
+     *     must match the format type in the database in order to use it in the 
      *     where clause of the select statement. I have successfully converted
      *     it into a localDate type, now it must be converted to java.sql.date
      *     type and again, the format MUST! match the database date format which
@@ -97,51 +83,36 @@ public class DayPresenter implements DayListener {
     try {
         conn = DBConnect.connect();        
         stmt = conn.createStatement();
-        SQL = "select EVENTID, "
-                + "EVENTTITLE, "
-                + "EVENTTYPEID, "
-                + "EVENTCREATORUSERID, "
-                + "EVENTSTARTDATE, "
-//                + "to_char(ESTIME, 'hh:mi AM'), "
-//                + "to_char(EETIME, 'hh:mi AM'), "
-                + "ESTIME, "
-                + "EETIME, "
-                + "EVENTALLDAY, "
-                + "EVENTMESSAGE, "
-                + "EVENTLOCATION, "
-                + "EVENTADDRESS, "
-                + "EVENTCITY, "
-                + "EVENTSTATE, "
-                + "EVENTZIP, "
-                + "CREATEDDATE, "
-                + "LASTUPDATEDATE  from event_t "
+        SQL = "select ID, "
+                + "TITLE, "
+                + "CREATORID, "
+                + "SDATE, "
+                + "SHOUR, "
+                + "SMIN, "
+                + "EHOUR, "
+                + "EMIN, "
+                + "SAM, "
+                + "EAM, "
+                + "ALLDAY, "
+                + "MESSAGE  from event_t "
                 + "order by eventid";
         rset = stmt.executeQuery(SQL);
         
        
         // add resultSet value to database variable
         while(rset.next()) {
-            dbeventID = rset.getInt("EVENTID");
-            dbeventTitle = rset.getString("EVENTTITLE");
-            dbeventTypeID = rset.getInt("EVENTTYPEID");
-            dbeventCreatorUserID = rset.getInt("EVENTCREATORUSERID");
-            dbeventStartDate = rset.getDate("EVENTSTARTDATE").toLocalDate();
-            // following lines converts db value to LocatDateTime type
-            Date dbSTime = rset.getDate("ESTIME");
-            Instant instST = Instant.ofEpochMilli(dbSTime.getTime());
-            dbeventStartTime = LocalDateTime.ofInstant(instST, ZoneId.systemDefault());
-            Date dbETime = rset.getDate("EETIME"); 
-            Instant instET = Instant.ofEpochMilli(dbETime.getTime());
-            dbeventEndTime = LocalDateTime.ofInstant(instET, ZoneId.systemDefault());
-            dbeventAllDay = rset.getBoolean("EVENTALLDAY");
-            dbeventMessage = rset.getString("EVENTMESSAGE");
-            dbeventLocation = rset.getString("EVENTLOCATION");
-            dbeventAddress = rset.getString("EVENTADDRESS");
-            dbeventCity = rset.getString("EVENTCITY");
-            dbeventState = rset.getString("EVENTSTATE");
-            dbeventZip = rset.getString("EVENTZIP");
-            dbCreatedDate = rset.getDate("CREATEDDATE");
-            dbLastUpdateDate = rset.getDate("LASTUPDATEDATE");
+            dbId = rset.getInt("ID");
+            dbTitle = rset.getString("TITLE");
+            dbCreatorId = rset.getInt("CREATORID");
+            dbDate = rset.getDate("SDATE").toLocalDate();
+            dbStartHour = rset.getInt("SHOUR");
+            dbStartMinute = rset.getInt("SMIN");
+            dbEndHour = rset.getInt("EHOUR");
+            dbEndMinute = rset.getInt("EMIN");
+            dbStartAMIndicator = rset.getBoolean("SAM");
+            dbEndAMIndicator = rset.getBoolean("EAM");
+            dbAllDayIndicator = rset.getBoolean("ALLDAY");
+            dbDescription = rset.getString("MESSAGE");
 
         
          /*
@@ -149,22 +120,18 @@ public class DayPresenter implements DayListener {
             * database, NOT with values inserted by user
             */
             newEvent = new EventBean();
-            newEvent.setEventID(dbeventID);
-            newEvent.setEventTitle(dbeventTitle);
-            newEvent.setEventTypeID(dbeventTypeID);
-            newEvent.setEventCreatorUserID(dbeventCreatorUserID);
-            newEvent.setEventStartDate(dbeventStartDate);
-            newEvent.setEventStartTime(dbeventStartTime);
-            newEvent.setEventEndTime(dbeventEndTime);
-            newEvent.setEventAllDay(dbeventAllDay);
-            newEvent.setEventMessage(dbeventMessage);
-            newEvent.setEventLocation(dbeventLocation);
-            newEvent.setEventAddress(dbeventAddress);
-            newEvent.setEventCity(dbeventCity);
-            newEvent.setEventState(dbeventState);
-            newEvent.setEventZip(dbeventZip);
-            newEvent.setCreatedDate(dbCreatedDate);
-            newEvent.setLastUpdateDate(dbLastUpdateDate);
+            newEvent.setId(dbId);
+            newEvent.setTitle(dbTitle);
+            newEvent.setCreatorId(dbCreatorId);
+            newEvent.setDate(dbDate);
+            newEvent.setStartHour(dbStartHour);
+            newEvent.setStartMinute(dbStartMinute);
+            newEvent.setEndHour(dbEndHour);
+            newEvent.setEndMinute(dbEndMinute);
+            newEvent.setEndAMIndicator(dbEndAMIndicator);
+            newEvent.setStartAMIndicator(dbStartAMIndicator);
+            newEvent.setAllDayIndicator(dbAllDayIndicator);
+            newEvent.setDescription(dbDescription);
             
             // add event bean to List
             eventsArray.add(i, newEvent); // add eventbean to List
