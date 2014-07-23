@@ -75,7 +75,7 @@ public class EventScreenView implements EventScreen {
 
     // if the event passed in is null, this is a new event.
     this.isNewEvent = (event == null);
-    this.isUsersEvent = (!isNewEvent && event.getCreatorUserID() == user.getUserID());
+    this.isUsersEvent = (!isNewEvent && event.getCreatorId() == user.getUserID());
     this.newEvent = event;
 
     // TextField for the event's title.

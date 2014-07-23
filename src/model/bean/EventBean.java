@@ -16,9 +16,9 @@ import java.time.LocalDate;
  */
 public class EventBean {
 
-  private int eventID;
+  private int id;
   private String title;
-  private int creatorUserID;
+  private int creatorId;
   private LocalDate date; 
   private int startHour;
   private int startMinute;
@@ -34,13 +34,13 @@ public class EventBean {
   }
 
 
-  public int getEventID() {
-    return eventID;
+  public int getId() {
+    return id;
   }
 
 
-  public void setEventID(int eventID) {
-    this.eventID = eventID;
+  public void setId(int id) {
+    this.id = id;
   }
 
 
@@ -54,13 +54,13 @@ public class EventBean {
   }
 
 
-  public int getCreatorUserID() {
-    return creatorUserID;
+  public int getCreatorId() {
+    return creatorId;
   }
 
 
-  public void setCreatorUserID(int creatorUserID) {
-    this.creatorUserID = creatorUserID;
+  public void setCreatorId(int creatorId) {
+    this.creatorId = creatorId;
   }
 
 
