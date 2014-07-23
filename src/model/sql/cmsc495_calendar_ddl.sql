@@ -52,7 +52,7 @@ CREATE TABLE EVENT_T
     ,TITLE             	VARCHAR2(50)    NOT NULL
     ,CREATORID     		NUMBER(6)     	NOT NULL
     ,SDATE	         	DATE     		NOT NULL
-    ,SHOUR				NUMBER(2)		NOT NULL
+    ,SHOUR				NUMBER(2)		NULL
     ,SMIN				NUMBER(2)		NULL
     ,EHOUR				NUMBER(2)		NULL
     ,EMIN				NUMBER(2)		NULL

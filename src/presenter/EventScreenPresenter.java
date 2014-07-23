@@ -12,7 +12,8 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeParseException;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import dbConnection.DBConnect;
 import model.bean.EventBean;
 import view.type.EventScreen;
@@ -29,14 +30,24 @@ public class EventScreenPresenter implements EventListener {
 
   private EventScreen eventScreen;
   
-  private int dbeventID;
-  private String dbeventTitle;
-  private int dbeventCreatorUserID;
-  private Date dbeventStartDate;
-  private int dbeventAllDay;
+  private int dbID;
+  private String dbTitle;
+  private int dbCreatorID;
+  private Date dbSDate;
+  private int dbSHour;
+  private int dbSMin;
+  private int dbEHour;
+  private int dbEMin;
+  private int dbSam;
+  private int dbEam;
+  private int dbAllDay;
   private Boolean eAD;
+  private Boolean eSam;
+  private int sAM;
+  private int eAM;
+  private Boolean eEam;
   private int allDay;
-  private String dbeventMessage;
+  private String dbMessage;
 
   // data connection variables
   private Connection conn;
@@ -71,71 +82,141 @@ public class EventScreenPresenter implements EventListener {
 	  java.util.Date sDate = Date.from(inst);
 	  // convert util.date to sql.Date
 	  java.sql.Date sqlDate = new java.sql.Date(sDate.getTime());
-	  
+
 	  
 	  // convert eventAllDay
 	  eAD = newEvent.getAllDayIndicator();
 	  if (!eAD) {
-		  dbeventAllDay = 0;
+		  dbAllDay = 0;
 	  } else {
-		  dbeventAllDay = 1;
+		  dbAllDay = 1;
 	  }
 	  
-	  dbeventTitle = newEvent.getTitle();
-	  dbeventCreatorUserID = 1; // not null value in DB, using value of 1 as default for testing
-	  dbeventStartDate = sqlDate;
-	  allDay = dbeventAllDay;
-	  dbeventMessage = newEvent.getDescription();
-	  String nextVal = "EVENT_SEQ.NEXTVAL";
+	  
+	  // convert StartAM
+	  eSam = newEvent.getStartAMIndicator();
+	  if (!eSam) {
+		  dbSam = 0;
+	  } else {
+		  dbSam = 1;
+	  }
+	  
+	  
+	  // convert EndAM
+	  eEam = newEvent.getEndAMIndicator();
+	  if (!eEam) {
+		  dbEam = 0;
+	  } else {
+		  dbEam = 1;
+	  }
+	  
+	  dbID = newEvent.getId();
+	  dbTitle = newEvent.getTitle();
+	  dbCreatorID = newEvent.getCreatorId(); // not null value in DB, using value of 1 as default for testing
+	  dbSDate = sqlDate;
+	  dbSHour = newEvent.getStartHour();
+	  dbSMin = newEvent.getStartMinute();
+	  dbEHour = newEvent.getEndHour();
+	  dbEMin = newEvent.getEndMinute();
+	  allDay = dbAllDay;
+	  sAM = dbSam;
+	  eAM = dbEam;
+	  dbMessage = newEvent.getDescription();
+	  
+	  // variables for accessing event_seq.nextval
+	  int eventSEQ = 0;
+	  
+	  
+	  //=========================================================================
+	  // get event sequence next value
+	  //=========================================================================
+	  try {
+		  conn = DBConnect.connect();
+		  String sqlIdentifier = "select EVENT_SEQ.NEXTVAL FROM EVENT_T";
+		  prepStmt = conn.prepareStatement(sqlIdentifier);
+		  synchronized( this ) {
+			  ResultSet rs = prepStmt.executeQuery();
+			  if(rs.next())
+				  eventSEQ = rs.getInt(1);
+		  }
 
-
-	 	  
+		  
+		  prepStmt.close();
+		  conn.close();
+		
+	  } // end try block
+	  
+	  catch(NullPointerException ex) {
+	        System.out.println("NullPointerException: " + ex.getMessage() + " " 
+	                + ex.getCause() + "\nNo NextVal");
+	  }
+	  catch(SQLException ex) {
+	      System.out.println("SQLException: " + ex.getMessage() 
+	              + "\nError: Can not get NextVal");
+	  } // end catch
+	    
+	  //fail-all close database resources
+	  finally {    
+	      try {
+	        
+	          if(prepStmt != null) prepStmt.close();
+	          if(conn != null) conn.close();
+	      }
+	      catch(SQLException ex) {
+		      System.out.println("Error: An error was detected while "
+		                  + "closing the data source!");
+		      } // end catch
+	  } // end finally =============================================================
+	  
+	  
+	  //============================================================================
+	  // insert event to database
+	  //============================================================================
 	  try {
 		  conn = DBConnect.connect();
 		  stmt = conn.createStatement();
-		  SQL = "INSERT INTO EVENT_T (EVENTID, EVENTTITLE, EVENTCREATORUSERID, EVENTSTARTDATE, ESTIME, EETIME, EVENTALLDAY, EVENTMESSAGE) VALUES(" + nextVal + ", '" + dbeventTitle + "', " + dbeventCreatorUserID + ", TO_DATE(" + dbeventStartDate + ", 'YYYYMMDD'), " + allDay + ", '" + dbeventMessage + ")"; 
-		  
+		  SQL = "INSERT INTO EVENT_T (ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) VALUES(" + eventSEQ + ", '" + dbTitle + "', " + dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), " + dbSHour + ", "  + dbSMin + ", " + dbEHour + ", " + dbEMin + ", " + sAM + ", " + eAM + ", " +  + allDay + ", '" + dbMessage + "')"; 
 		  stmt.executeUpdate(SQL);
-		  
-	/*	  prepStmt = conn.prepareStatement("INSERT INTO EVENT_T("
-				+ "EVENTID,"
-		  		+ "EVENTTITLE,"
-				+ "EVENTTYPEID,"
-		  		+ "EVENTCREATORUSERID,"
-		  		+ "EVENTSTARTDATE,"
-		  		+ "ESTIME,"
-		  		+ "EETIME,"
-		  		+ "EVENTALLDAY,"
-		  		+ "EVENTMESSAGE, "
-		  		+ "EVENTLOCATION"
-		  		+ "EVENTADDRESS,"
-		  		+ "EVENTCITY,"
-		  		+ "EVENTSTATE,"
-		  		+ "EVENTZIP, "
-		  		+ "CREATEDDATE,"
-		  		+ "LASTUPDATEDATE)"
-		  		+ "VALUES('EVENTID_SEQ.NEXTVAL',?,?,?,?,?,?,?,?,?,?,?,?,?, SYSDATE, SYSDATE)");
-		  
-		  //prepStmt.setInt(1, EVENTID_SEQ.NEXTVAL);
-		  prepStmt.setString(1, newEvent.getEventTitle());
-		  prepStmt.setInt(2, 5); // not null value in DB, using value of 5 as default for testing
-		  prepStmt.setInt(3, 1); // not null value in DB, using value of 1 as default for testing
-		  prepStmt.setDate(4, sqlDate);
-		  prepStmt.setDate(5, sqlSTime);
-		  prepStmt.setDate(6, sqlETime);
-		  prepStmt.setBoolean(7, newEvent.getEventAllDay());
-		  prepStmt.setString(8, newEvent.getEventMessage());
-		  prepStmt.setString(9, "Central Park");
-		  prepStmt.setString(10, "1525 F Street");
-		  prepStmt.setString(11, "New York");
-		  prepStmt.setString(12, "NY");
-		  prepStmt.setString(13, "20601");
-		  prepStmt.executeUpdate();
-		  
-		  //prepStmt.close(); */
-		  
+
 		  stmt.close();
 		  conn.close();
+		// =======================================================================
+		// DO NOT DELETE PREPAREDSTATEMENT CODE BELOW!!
+		//========================================================================
+			/*String sqlInsert = "INSERT INTO EVENT_T("
+				+ "ID,"
+		  		+ "TITLE,"
+		  		+ "CREATORID,"
+		  		+ "SDATE,"
+		  		+ "SHOUR,"
+		  		+ "SMIN,"
+		  		+ "EHOUR,"
+		  		+ "EMIN, "
+		  		+ "SAM"
+		  		+ "EAM,"
+		  		+ "ALLDAY,"
+		  		+ "MESSAGE)"
+		  		+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"; 
+			
+			prepStmt = conn.prepareStatement(sqlInsert);
+		  
+		  prepStmt.setInt(1, eventSEQ);
+		  prepStmt.setString(2, newEvent.getTitle());
+		  prepStmt.setInt(3, newEvent.getCreatorId());
+		  prepStmt.setDate(4, TO_DATE(dbSDate , 'YYYY-MM-DD')); // could not get this line to work!!
+		  prepStmt.setInt(5, newEvent.getStartHour());
+		  prepStmt.setInt(6, newEvent.getStartMinute());
+		  prepStmt.setInt(7, newEvent.getEndHour());
+		  prepStmt.setInt(8, newEvent.getEndMinute());
+		  prepStmt.setInt(9, dbSam);
+		  prepStmt.setInt(10, dbEam);
+		  prepStmt.setInt(11, dbAllDay);
+		  prepStmt.setString(12, newEvent.getDescription());
+		  prepStmt.executeUpdate();
+		  
+		  prepStmt.close(); */
+		  
+		  
 		 
 	  } // end try block
 	  
@@ -157,30 +238,62 @@ public class EventScreenPresenter implements EventListener {
 	      try {
 	        
 	          if(stmt != null) stmt.close();
-	          if(conn!=null) conn.close();
+	          if(conn != null) conn.close();
 	      }
 	  catch(SQLException ex) {
 	      System.out.println("Error: An error was detected while "
 	                  + "closing the data source!");
 	      } // end catch
 	  } // end finally =============================================================
-	  
-	  
-	  
-      // [TESTING ONLY - get event values and print to output        
-//         System.out.println( "\n"
-//         + newEvent.getEventTitle()  + "\n"
-//         + newEvent.getEventCreatorUserID() + "\n"
-//         + newEvent.getEventStartDate() + "\n"
-//         + newEvent.getEventStartTime() + "\n"
-//         + newEvent.getEventEndTime() + "\n"
-//         + newEvent.getEventAllDay() + "\n"
-//         + newEvent.getEventMessage() + "\n\n");
+
   }
 
 
   @Override
   public void delete(EventBean event) {
-    // [MJ] delete the event from the database
+	  
+	  //==============================================================================  
+	  // delete the event from the database
+	  //==============================================================================
+	  
+	  EventBean delEvent = event;
+	  
+	  // get ID of event
+	  int evID = delEvent.getId();
+	  System.out.println(evID);
+	  
+	  try {
+		  conn = DBConnect.connect();
+		  stmt = conn.createStatement();
+		  SQL = "DELETE FROM EVENT_T WHERE ID = " + evID ; 
+		  stmt.executeUpdate(SQL);
+
+		  
+		  stmt.close();
+		  conn.close();
+		
+	  } // end try block
+	  
+	  catch(NullPointerException ex) {
+	        System.out.println("NullPointerException: " + ex.getMessage() + " " 
+	                + ex.getCause() + "\nRecord Does Not Exist.");
+	  }
+	  catch(SQLException ex) {
+	      System.out.println("SQLException: " + ex.getMessage() 
+	              + "\nError: Can not access data.");
+	  } // end catch
+	    
+	  //fail-all close database resources
+	  finally {    
+	      try {
+	        
+	          if(stmt != null) stmt.close();
+	          if(conn != null) conn.close();
+	      }
+	      catch(SQLException ex) {
+		      System.out.println("Error: An error was detected while "
+		                  + "closing the data source!");
+		      } // end catch
+	  } // end finally =============================================================
   }
 }
