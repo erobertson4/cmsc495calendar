@@ -83,37 +83,36 @@ public class DayPresenter implements DayListener {
     try {
         conn = DBConnect.connect();        
         stmt = conn.createStatement();
-        SQL = "select EVENTID, "
-                + "EVENTTITLE, "
-                + "EVENTTYPEID, "
-                + "EVENTCREATORUSERID, "
-                + "EVENTSTARTDATE, "
-                + "EVENTALLDAY, "
-                + "EVENTSTARTHOUR, "
-                + "EVENTSTARTMINUTE, "
-                + "EVENTSTARTAMINDICATOR, "
-                + "EVENTENDMINUTE, "
-                + "EVENTENDAMINDICATOR, "
-                + "EVENTMESSAGE  from event_t "
+        SQL = "select ID, "
+                + "TITLE, "
+                + "CREATORID, "
+                + "SDATE, "
+                + "SHOUR, "
+                + "SMIN, "
+                + "EHOUR, "
+                + "EMIN, "
+                + "SAM, "
+                + "EAM, "
+                + "ALLDAY, "
+                + "MESSAGE  from event_t "
                 + "order by eventid";
         rset = stmt.executeQuery(SQL);
         
        
         // add resultSet value to database variable
         while(rset.next()) {
-            dbId = rset.getInt("EVENTID");
-            dbTitle = rset.getString("EVENTTITLE");
-            dbCreatorId = rset.getInt("EVENTCREATORUSERID");
-            dbDate = rset.getDate("EVENTSTARTDATE").toLocalDate();
-            dbAllDayIndicator = rset.getBoolean("EVENTALLDAY");
-            dbStartHour = rset.getInt("EVENTSTARTHOUR");
-            dbStartMinute = rset.getInt("EVENTSTARTMINUTE");
-            dbStartAMIndicator = rset.getBoolean("EVENTSTARTAMINDICATOR");
-            dbEndHour = rset.getInt("EVENTENDHOUR");
-            dbEndMinute = rset.getInt("EVENTENDMINUTE");
-            dbEndAMIndicator = rset.getBoolean("EVENTENDAMINDICATOR");
-            
-            dbDescription = rset.getString("EVENTMESSAGE");
+            dbId = rset.getInt("ID");
+            dbTitle = rset.getString("TITLE");
+            dbCreatorId = rset.getInt("CREATORID");
+            dbDate = rset.getDate("SDATE").toLocalDate();
+            dbStartHour = rset.getInt("SHOUR");
+            dbStartMinute = rset.getInt("SMIN");
+            dbEndHour = rset.getInt("EHOUR");
+            dbEndMinute = rset.getInt("EMIN");
+            dbStartAMIndicator = rset.getBoolean("SAM");
+            dbEndAMIndicator = rset.getBoolean("EAM");
+            dbAllDayIndicator = rset.getBoolean("ALLDAY");
+            dbDescription = rset.getString("MESSAGE");
 
         
          /*
@@ -125,13 +124,13 @@ public class DayPresenter implements DayListener {
             newEvent.setTitle(dbTitle);
             newEvent.setCreatorId(dbCreatorId);
             newEvent.setDate(dbDate);
-            newEvent.setAllDayIndicator(dbAllDayIndicator);
             newEvent.setStartHour(dbStartHour);
             newEvent.setStartMinute(dbStartMinute);
-            newEvent.setStartAMIndicator(dbStartAMIndicator);
             newEvent.setEndHour(dbEndHour);
             newEvent.setEndMinute(dbEndMinute);
             newEvent.setEndAMIndicator(dbEndAMIndicator);
+            newEvent.setStartAMIndicator(dbStartAMIndicator);
+            newEvent.setAllDayIndicator(dbAllDayIndicator);
             newEvent.setDescription(dbDescription);
             
             // add event bean to List
