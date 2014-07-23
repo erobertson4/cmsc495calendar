@@ -16,6 +16,9 @@ import view.type.LoginScreen.LoginListener;
 import view.type.NewUserScreen;
 import view.ui.CalendarView;
 import view.ui.NewUserScreenView;
+import org.controlsfx.dialog.Dialogs;
+import javafx.stage.Stage;
+
 
 
 /**
@@ -45,7 +48,9 @@ public class LoginPresenter implements LoginListener {
 
   
   // create collection object for user data
-  private UserBean newUser;  
+  private UserBean newUser;
+  
+  private Stage stage;
   
   public LoginPresenter(LoginScreen loginScreen) {
     this.loginScreen = loginScreen;
@@ -91,6 +96,8 @@ public class LoginPresenter implements LoginListener {
             dbPassword = rset.getString("PASSWORD");
        } // end while loop
         
+       
+        
         // create userBean object
         newUser = new UserBean(dbUserID, dbFirstName, dbLastName, 
                 dbUserName, dbPassword);
@@ -109,7 +116,8 @@ public class LoginPresenter implements LoginListener {
         System.out.println("SQLException: " + ex.getMessage() 
                 + "\nError: can not connect to database");
         loginScreen.showLoginScreen();
-    } // end catch   
+    } // end catch 
+    
         //fail-all close database resources
         //fail-all close database resources
         finally {    
@@ -152,6 +160,10 @@ public class LoginPresenter implements LoginListener {
         }
     }
     catch(NullPointerException ex) {
+    	// if username or password does not match value in database
+        Dialogs.create().owner(stage).title("Invalid Username or Password Entered!")
+          .message("An invalid username or password was "
+                + "entered. Please try again.").showError();
             System.out.println("An invalid username or password was "
                     + "entered. Please try again." + ex);
             loginScreen.showLoginScreen();
