@@ -104,7 +104,7 @@ public class CalendarView implements Calendar {
     });
 
     previousMonthButton = new Button("<<");
-    previousMonthButton.setStyle("-fx-background-color: #7F9E9E");
+    previousMonthButton.setStyle("-fx-background-color: #9FC5C6");
     previousMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
@@ -117,7 +117,7 @@ public class CalendarView implements Calendar {
     });
 
     nextMonthButton = new Button(">>");
-    nextMonthButton.setStyle("-fx-background-color: #7F9E9E");
+    nextMonthButton.setStyle("-fx-background-color: #9FC5C6");
     nextMonthButton.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
