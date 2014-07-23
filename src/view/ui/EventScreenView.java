@@ -341,8 +341,8 @@ public class EventScreenView implements EventScreen {
     datePicker.setValue(newEvent.getDate());
 
     // set the all day indicator or time fields
-    if (newEvent.getAllDayIndicator() != null) {
-      allDayCheckBox.setSelected(newEvent.getAllDayIndicator());
+    if (newEvent.getAllDayIndicator()) {
+      allDayCheckBox.setSelected(true);
     }
     else {
       startHourSelector.setValue(newEvent.getStartHour());
