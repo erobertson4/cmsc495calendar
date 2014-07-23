@@ -4,7 +4,6 @@
 package view.ui;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -76,7 +75,7 @@ public class EventScreenView implements EventScreen {
 
     // if the event passed in is null, this is a new event.
     this.isNewEvent = (event == null);
-    this.isUsersEvent = (!isNewEvent && event.getEventUserBean().getUsername().equals(user.getUsername()));
+    this.isUsersEvent = (!isNewEvent && event.getCreatorUserID() == user.getUserID());
     this.newEvent = event;
 
     // TextField for the event's title.
@@ -217,32 +216,18 @@ public class EventScreenView implements EventScreen {
         if (isNewEvent) {
           newEvent = new EventBean();
         }
-        newEvent.setEventTitle(titleTextField.getText());
-        newEvent.setEventStartDate(eventDate);
-        newEvent.setEventAllDay(allDayCheckBox.isSelected());
-        newEvent.setEventMessage(descriptionTextArea.getText());
+        newEvent.setTitle(titleTextField.getText());
+        newEvent.setDate(eventDate);
+        newEvent.setAllDayIndicator(allDayCheckBox.isSelected());
+        newEvent.setDescription(descriptionTextArea.getText());
 
-        // if this isn't an all day event, we have to figure out what the start
-        // and end times are based on the values in the combo boxes.
-        if (!newEvent.getEventAllDay()) {
-          int startEventHour = startHourSelector.getValue() - 1;
-          if (startAm_PmSelector.getValue().equals(PM)) {
-            startEventHour += 12;
-          }
-
-          newEvent.setEventStartTime(LocalDateTime.of(eventDate.getYear(), eventDate.getMonth(),
-              eventDate.getDayOfMonth(), startEventHour,
-              Integer.valueOf(startMinuteSelector.getValue())));
-
-          int endEventHour = endHourSelector.getValue() - 1;
-          if (endAm_PmSelector.getValue().equals(PM)) {
-            endEventHour += 12;
-          }
-
-          newEvent.setEventEndTime(LocalDateTime.of(eventDate.getYear(), eventDate.getMonth(),
-              eventDate.getDayOfMonth(), endEventHour,
-              Integer.valueOf(endMinuteSelector.getValue())));
-        }
+        newEvent.setStartHour(startHourSelector.getValue());
+        newEvent.setStartMinute(Integer.valueOf(startMinuteSelector.getValue()));
+        newEvent.setStartAMIndicator(startAm_PmSelector.getValue().equals(AM));
+        
+        newEvent.setEndHour(endHourSelector.getValue());
+        newEvent.setEndMinute(Integer.valueOf(endMinuteSelector.getValue()));
+        newEvent.setEndAMIndicator(endAm_PmSelector.getValue().equals(AM));
 
         listener.save(newEvent);
       }
@@ -300,7 +285,7 @@ public class EventScreenView implements EventScreen {
 
     if (!isNewEvent) {
       addEventScreenValues();
-      stage.setTitle(event.getEventTitle());
+      stage.setTitle(event.getTitle());
     }
     else {
       stage.setTitle("New Event");
@@ -350,69 +335,25 @@ public class EventScreenView implements EventScreen {
    * 1-based 12 hours.
    */
   private void addEventScreenValues() {
-    LocalDateTime startDateTime = newEvent.getEventStartTime();
-    LocalDateTime endDateTime = newEvent.getEventEndTime();
+    titleTextField.setText(newEvent.getTitle());
+    descriptionTextArea.setText(newEvent.getDescription());
 
-    titleTextField.setText(newEvent.getEventTitle());
-    descriptionTextArea.setText(newEvent.getEventMessage());
+    datePicker.setValue(newEvent.getDate());
 
-    datePicker.setValue(newEvent.getEventStartDate());
-
-    // if there is an end time, extract the values so they display properly in
-    // the ComboBoxes.
-    if (startDateTime != null) {
-      int startHour = startDateTime.getHour();
+    // set the all day indicator or time fields
+    if (newEvent.getAllDayIndicator() != null) {
+      allDayCheckBox.setSelected(newEvent.getAllDayIndicator());
+    }
+    else {
+      startHourSelector.setValue(newEvent.getStartHour());
+      startMinuteSelector.setValue(String.format("%02d", newEvent.getStartMinute()));
+      startAm_PmSelector.setValue((newEvent.getStartAMIndicator() ? AM : PM));
       
-      // determine 1-based 12 hour
-      if (startHour == 0) {
-        startHourSelector.setValue(startHour + 12);
-      }
-      else if (startHour > 12) {
-        startHourSelector.setValue(startHour - 12);
-      }
-      else {
-        startHourSelector.setValue(startHour);
-      }
-
-      // determine AM or PM
-      if (startHour > 11) {
-        startAm_PmSelector.setValue(PM);
-      }
-      else {
-        startAm_PmSelector.setValue(AM);
-      }
-      startMinuteSelector.setValue(String.valueOf(newEvent.getEventStartTime().getMinute()));
+      endHourSelector.setValue(newEvent.getEndHour());
+      endMinuteSelector.setValue(String.format("%02d", newEvent.getEndMinute()));
+      endAm_PmSelector.setValue((newEvent.getEndAMIndicator() ? AM : PM));
     }
-
-    // if there is an end time, extract the values so they display properly in
-    // the ComboBoxes.
-    if (endDateTime != null) {
-      int endHour = endDateTime.getHour();
-      
-      // determine 1-based 12 hour
-      if (endHour == 0) {
-        endHourSelector.setValue(endHour + 12);
-      }
-      else if (endHour > 12) {
-        endHourSelector.setValue(endHour - 12);
-      }
-      else {
-        endHourSelector.setValue(endHour);
-      }
-
-      // determine AM or PM
-      if (endHour > 11) {
-        endAm_PmSelector.setValue(PM);
-      }
-      else {
-        endAm_PmSelector.setValue(AM);
-      }
-      endMinuteSelector.setValue(String.valueOf(newEvent.getEventEndTime().getMinute()));
-    }
-
-    if (newEvent.getEventAllDay() != null) {
-      allDayCheckBox.setSelected(newEvent.getEventAllDay());
-    }
+    
   }
 
 

@@ -4,9 +4,6 @@
 package model.bean;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 /**
@@ -20,133 +17,143 @@ import java.util.Date;
 public class EventBean {
 
   private int eventID;
-  private String eventTitle;
-  private int eventTypeID;
-  private int eventCreatorUserID;
-  private LocalDate eventStartDate; // need to change 
-  private LocalDateTime eventStartTime;
-  private LocalDateTime eventEndTime;
-  private Boolean eventAllDay;
-  private String eventMessage;
-  private String eventLocation;
-  private String eventAddress;
-  private String eventCity;
-  private String eventState;
-  private String eventZip;
-  private Date createdDate;
-  private Date lastUpdateDate;
-  private UserBean eventUserBean;
-
+  private String title;
+  private int creatorUserID;
+  private LocalDate date; 
+  private int startHour;
+  private int startMinute;
+  private Boolean startAMIndicator;
+  private int endHour;
+  private int endMinute;
+  private Boolean endAMIndicator;
+  private Boolean allDayIndicator;
+  private String description;
 
 
   public EventBean() {
   }
 
-  // getters
+
   public int getEventID() {
     return eventID;
   }
-  public String getEventTitle() {
-      return eventTitle;
+
+
+  public void setEventID(int eventID) {
+    this.eventID = eventID;
   }
-  public int getEventTypeID() {
-      return eventTypeID;
+
+
+  public String getTitle() {
+    return title;
   }
-  public int getEventCreatorUserID() {
-      return eventCreatorUserID;
+
+
+  public void setTitle(String title) {
+    this.title = title;
   }
-  public LocalDate getEventStartDate() {
-      return eventStartDate;
+
+
+  public int getCreatorUserID() {
+    return creatorUserID;
   }
-  public LocalDateTime getEventStartTime() {
-      return eventStartTime;
+
+
+  public void setCreatorUserID(int creatorUserID) {
+    this.creatorUserID = creatorUserID;
   }
-  public LocalDateTime getEventEndTime() {
-      return eventEndTime;
+
+
+  public LocalDate getDate() {
+    return date;
   }
-  public Boolean getEventAllDay() {
-      return eventAllDay;
+
+
+  public void setDate(LocalDate date) {
+    this.date = date;
   }
-  public String getEventMessage() {
-      return eventMessage;
+
+
+  public int getStartHour() {
+    return startHour;
   }
-  public String getEventLocation() {
-      return eventLocation;
+
+
+  public void setStartHour(int startHour) {
+    this.startHour = startHour;
   }
-  public String getEventAddress() {
-      return eventAddress;
+
+
+  public int getStartMinute() {
+    return startMinute;
   }
-  public String getEventCity() {
-      return eventCity;
+
+
+  public void setStartMinute(int startMinute) {
+    this.startMinute = startMinute;
   }
-  public String getEventState() {
-      return eventState;
+
+
+  public Boolean getStartAMIndicator() {
+    return startAMIndicator;
   }
-  public String getEventZip() {
-      return eventZip;
+
+
+  public void setStartAMIndicator(Boolean startAMIndicator) {
+    this.startAMIndicator = startAMIndicator;
   }
-  public Date getCreatedDate() {
-      return createdDate;
+
+
+  public int getEndHour() {
+    return endHour;
   }
-  public Date getLastUpdateDate() {
-      return lastUpdateDate;
+
+
+  public void setEndHour(int endHour) {
+    this.endHour = endHour;
   }
-  public UserBean getEventUserBean() {
-      return eventUserBean;
+
+
+  public int getEndMinute() {
+    return endMinute;
   }
-  
-  
-  // setters 
-  public void setEventID(int eEventID) {
-      this.eventID = eEventID;
+
+
+  public void setEndMinute(int endMinute) {
+    this.endMinute = endMinute;
   }
-  public void setEventTitle(String eTitle) {
-      this.eventTitle = eTitle;
+
+
+  public Boolean getEndAMIndicator() {
+    return endAMIndicator;
   }
-  public void setEventTypeID(int eTypeID) {
-      this.eventTypeID = eTypeID;
+
+
+  public void setEndAMIndicator(Boolean endAMIndicator) {
+    this.endAMIndicator = endAMIndicator;
   }
-  public void setEventCreatorUserID(int eCreatorUserID) {
-      this.eventCreatorUserID = eCreatorUserID;
+
+
+  public Boolean getAllDayIndicator() {
+    return allDayIndicator;
   }
-  public void setEventStartDate(LocalDate eStartDate) {
-      this.eventStartDate = eStartDate;
+
+
+  public void setAllDayIndicator(Boolean allDayIndicator) {
+    this.allDayIndicator = allDayIndicator;
   }
-  public void setEventStartTime(LocalDateTime eStartTime) {
-      this.eventStartTime = eStartTime;
+
+
+  public String getDescription() {
+    return description;
   }
-  public void setEventEndTime(LocalDateTime eEndTime) {
-      this.eventEndTime = eEndTime;
+
+
+  public void setDescription(String description) {
+    this.description = description;
   }
-  public void setEventAllDay(Boolean eAllDay) {
-      this.eventAllDay = eAllDay;
-  }
-  public void setEventMessage(String eMessage) {
-      this.eventMessage = eMessage;
-  }
-  public void setEventLocation(String eLocation) {
-      this.eventLocation = eLocation;
-  }
-  public void setEventAddress(String eAddress) {
-      this.eventLocation = eAddress;
-  }
-  public void setEventCity(String eCity) {
-      this.eventCity = eCity;
-  }
-  public void setEventState(String eState) {
-      this.eventState = eState;
-  }
-  public void setEventZip(String eZip) {
-      this.eventZip = eZip;
-  }
-  public void setCreatedDate(Date eCreatedDate) {
-      this.createdDate = eCreatedDate;
-  }
-  public void setLastUpdateDate(Date eLastUpdateDate) {
-      this.lastUpdateDate = eLastUpdateDate;
-  }
-  public void setEventUserBean(UserBean eUserBean) {
-      this.eventUserBean = eUserBean;
-  }
+
+ 
+
 
 } // end method: eventBean
