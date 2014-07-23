@@ -4,7 +4,7 @@
 package model.bean;
 
 /**
- * Corresponding class to the User table in the database. TODO add more
+ * Corresponding class to the User table in the database. 
  * information
  * 
  * @author elijahr

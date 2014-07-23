@@ -72,7 +72,7 @@ public class DayPresenter implements DayListener {
     GregorianCalendar gregorianCalendar = day.getGregorianCalendar();
 
     // ======================================================================
-    // TODO [MJ] retrieve the list of events with the given GregorianCalendar
+    // retrieve the list of events with the given GregorianCalendar
     // ======================================================================
     
     ArrayList<EventBean> eventsArray = new ArrayList<EventBean>() {};

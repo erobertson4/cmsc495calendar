@@ -4,13 +4,12 @@
 package model.bean;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 
 /**
- * Corresponding class to the Event table in the database. TODO add more
+ * Corresponding class to the Event table in the database. 
  * information
  * 
  * @author elijahr

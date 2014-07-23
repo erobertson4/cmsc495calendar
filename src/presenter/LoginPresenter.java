@@ -126,7 +126,7 @@ public class LoginPresenter implements LoginListener {
     
     
     // ====================================================================
-    // TODO [MJ] make sure it is a genuine login before creating a calendar
+    // make sure it is a genuine login before creating a calendar
     // ====================================================================
     
 }
