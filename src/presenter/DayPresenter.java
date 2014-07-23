@@ -95,7 +95,7 @@ public class DayPresenter implements DayListener {
                 + "EAM, "
                 + "ALLDAY, "
                 + "MESSAGE  from event_t "
-                + "order by eventid";
+                + "order by id";
         rset = stmt.executeQuery(SQL);
         
        
