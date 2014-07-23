@@ -24,7 +24,7 @@ import view.type.EventScreen.EventListener;
  * element and other elements.
  * 
  * @author elijahr
- *
+ * @author mattj
  */
 public class EventScreenPresenter implements EventListener {
 
@@ -52,7 +52,6 @@ public class EventScreenPresenter implements EventListener {
   // data connection variables
   private Connection conn;
   private String SQL;
-  private ResultSet rset;
   private PreparedStatement prepStmt = null;
   private Statement stmt;
   
@@ -112,7 +111,7 @@ public class EventScreenPresenter implements EventListener {
 	  
 	  dbID = newEvent.getId();
 	  dbTitle = newEvent.getTitle();
-	  dbCreatorID = newEvent.getCreatorId(); // not null value in DB, using value of 1 as default for testing
+	  dbCreatorID = newEvent.getCreatorId(); 
 	  dbSDate = sqlDate;
 	  dbSHour = newEvent.getStartHour();
 	  dbSMin = newEvent.getStartMinute();
@@ -126,7 +125,8 @@ public class EventScreenPresenter implements EventListener {
 	  // variables for accessing event_seq.nextval
 	  int eventSEQ = 0;
 	  
-	  
+	  System.out.println("This is eventID: " + dbID);
+
 	  //=========================================================================
 	  // get event sequence next value
 	  //=========================================================================
@@ -175,7 +175,74 @@ public class EventScreenPresenter implements EventListener {
 	  try {
 		  conn = DBConnect.connect();
 		  stmt = conn.createStatement();
-		  SQL = "INSERT INTO EVENT_T (ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) VALUES(" + eventSEQ + ", '" + dbTitle + "', " + dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), " + dbSHour + ", "  + dbSMin + ", " + dbEHour + ", " + dbEMin + ", " + sAM + ", " + eAM + ", " +  + allDay + ", '" + dbMessage + "')"; 
+		  
+		  // if new record (which will = 0) do insert, if existing do update
+		  if (dbID == 0){
+			  // add new event
+
+			  // if event is allDay
+			  if (allDay != 1) {
+				  // insert start and end times
+				  SQL = "INSERT INTO EVENT_T "
+				  		+ "(ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, "
+				  		+ "EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) "
+				  		+ "VALUES(" + eventSEQ + ", '"
+				  		+ dbTitle + "', " 
+				  		+ dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), " 
+				  		+ dbSHour + ", "  
+				  		+ dbSMin + ", " 
+				  		+ dbEHour + ", " 
+				  		+ dbEMin + ", " 
+				  		+ sAM + ", " 
+				  		+ eAM + ", " 
+				  		+ allDay + ", '" 
+				  		+ dbMessage + "')"; 
+			  } else {
+				  // insert as all day event
+				  System.out.println("This is uesr ID:" + dbCreatorID);
+				  SQL = "INSERT INTO EVENT_T "
+				  		+ "(ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, "
+				  		+ "EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) "
+				  		+ "VALUES(" + eventSEQ + ", '" 
+				  		+ dbTitle + "', " 
+				  		+ dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), "
+				  		+ "'', '', '', '', '', '', "  
+				  		+ allDay + ", '" 
+				  		+ dbMessage + "')"; 
+			  } // end if: allDay
+		  } else {
+			  // update record
+			  if (allDay != 1) {
+				  
+				  // update with start and end times
+				  SQL = "UPDATE EVENT_T SET "
+						+ "TITLE = '" + dbTitle + "', "
+						+ "SDATE = TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'),"
+						+ "SHOUR = " + dbSHour + ", " 
+						+ "SMIN = " + dbSMin + ", "
+						+ "EHOUR = " + dbEHour + ", "
+						+ "EMIN = " + dbEMin + ", "
+						+ "SAM = " + sAM + ", "
+						+ "eAM = " + eAM + ", "
+						+ "ALLDAY = " + allDay + ", "
+					    + "MESSAGE = '" + dbMessage + "' WHERE ID = " + dbID + " ";
+			  }  else {
+				  // update as all day event
+				  SQL = "UPDATE EVENT_T SET "
+						+ "TITLE = '" + dbTitle + "', "
+						+ "SDATE = TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'),"
+						+ "SHOUR = '', " 
+						+ "SMIN = '', " 
+						+ "EHOUR = '', " 
+						+ "EMIN = '', " 
+						+ "SAM = '', " 
+						+ "eAM = '', " 
+						+ "ALLDAY = " + allDay + ", "
+						+ "MESSAGE = '" + dbMessage + "' WHERE ID = " + dbID + " ";
+			  } // end if: allDay
+		  } // end else
+		  
+		  
 		  stmt.executeUpdate(SQL);
 
 		  stmt.close();

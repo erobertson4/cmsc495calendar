@@ -216,18 +216,30 @@ public class EventScreenView implements EventScreen {
         if (isNewEvent) {
           newEvent = new EventBean();
         }
+        newEvent.setCreatorId(user.getUserID());
         newEvent.setTitle(titleTextField.getText());
         newEvent.setDate(eventDate);
         newEvent.setAllDayIndicator(allDayCheckBox.isSelected());
         newEvent.setDescription(descriptionTextArea.getText());
 
-        newEvent.setStartHour(startHourSelector.getValue());
-        newEvent.setStartMinute(Integer.valueOf(startMinuteSelector.getValue()));
-        newEvent.setStartAMIndicator(startAm_PmSelector.getValue().equals(AM));
-        
-        newEvent.setEndHour(endHourSelector.getValue());
-        newEvent.setEndMinute(Integer.valueOf(endMinuteSelector.getValue()));
-        newEvent.setEndAMIndicator(endAm_PmSelector.getValue().equals(AM));
+        // insert empty string value if allDay selected
+        // reason: prohibits nullPointerException when no values are entered
+        // as a result of allDay selection
+        if (allDayCheckBox.isSelected()) {
+        	newEvent.setStartHour(0);
+            newEvent.setStartMinute(0);
+            newEvent.setStartAMIndicator(false);
+            newEvent.setEndHour(0);
+            newEvent.setEndMinute(0);
+            newEvent.setEndAMIndicator(false);
+        } else {
+        	newEvent.setStartHour(startHourSelector.getValue());
+        	newEvent.setStartMinute(Integer.valueOf(startMinuteSelector.getValue()));
+        	newEvent.setStartAMIndicator(startAm_PmSelector.getValue().equals(AM));
+        	newEvent.setEndHour(endHourSelector.getValue());
+        	newEvent.setEndMinute(Integer.valueOf(endMinuteSelector.getValue()));
+        	newEvent.setEndAMIndicator(endAm_PmSelector.getValue().equals(AM));
+        }
 
         listener.save(newEvent);
       }
