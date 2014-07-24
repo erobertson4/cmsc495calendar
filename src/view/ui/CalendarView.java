@@ -176,6 +176,7 @@ public class CalendarView implements Calendar {
     layout.setPadding(new Insets(10));
     layout.getChildren().addAll(monthYearLayout, controlsLayout,
         month.getCalendar());
+    layout.setAlignment(Pos.CENTER);
 
     // create and show screen
     Scene scene = new Scene(layout);
