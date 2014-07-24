@@ -11,17 +11,15 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dbConnection.DBConnect;
 import model.bean.EventBean;
 import view.type.Month;
 import view.type.Month.MonthListener;
+import dbConnection.DBConnect;
 
 /**
  * @author elijahr

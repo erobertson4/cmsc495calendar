@@ -28,11 +28,6 @@ public interface Day {
    */
   public interface DayListener {
 
-    /**
-     * Retrieve from the database the events for the Day.
-     */
-    void getEvents();
-
 
     /**
      * Show the details of an event.

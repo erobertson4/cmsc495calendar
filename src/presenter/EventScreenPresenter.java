@@ -60,8 +60,6 @@ public class EventScreenPresenter implements EventListener {
   private PreparedStatement prepStmt = null;
   private Statement stmt;
   
-  private EventBean newEvent;  
-  
   public EventScreenPresenter(EventScreen eventScreen, Month month, Day day) {
     this.eventScreen = eventScreen;
     this.day = day;
