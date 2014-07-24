@@ -102,6 +102,7 @@ public class CalendarView implements Calendar {
         gregorianCalendar.set(yearComboBox.getValue(),
             convertMonthToInt(monthComboBox.getValue()), 1);
         setNewMonth(gregorianCalendar);
+        setNavigationControls();
       }
     });
 
@@ -234,7 +235,6 @@ public class CalendarView implements Calendar {
    * enabled.
    */
   private void setNavigationControls() {
-
     if (gregorianCalendar.get(GregorianCalendar.MONTH) == GregorianCalendar.JANUARY
         && gregorianCalendar.get(GregorianCalendar.YEAR) == YEARS[0]) {
       previousMonthButton.setDisable(true);
