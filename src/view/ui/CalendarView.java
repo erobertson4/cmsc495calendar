@@ -169,12 +169,10 @@ public class CalendarView implements Calendar {
     
     monthYearDisplayedLabel = new Label(currentMonthString + " " + currentYear);
     monthYearDisplayedLabel.setStyle("-fx-font-size: 20px");
-    VBox monthYearLayout = new VBox(monthYearDisplayedLabel);
-    monthYearLayout.setAlignment(Pos.CENTER);
 
     layout = new VBox(10);
     layout.setPadding(new Insets(10));
-    layout.getChildren().addAll(monthYearLayout, controlsLayout,
+    layout.getChildren().addAll(monthYearDisplayedLabel, controlsLayout,
         month.getCalendar());
     layout.setAlignment(Pos.CENTER);
 
@@ -208,7 +206,6 @@ public class CalendarView implements Calendar {
     
     layout.getChildren().add(month.getCalendar());
     layout.getChildren().set(0, monthYearDisplayedLabel);
-    layout.setAlignment(Pos.CENTER);
   }
 
 
