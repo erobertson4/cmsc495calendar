@@ -4,7 +4,6 @@
 package view.type;
 
 import java.time.LocalDate;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ import model.bean.EventBean;
 public interface Month {
   
   public interface MonthListener {
-    void getEvents(GregorianCalendar startDate, GregorianCalendar endDate);
+    void getEvents(LocalDate startDate, LocalDate endDate);
   }
   
   GridPane getCalendar();
