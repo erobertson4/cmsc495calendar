@@ -33,8 +33,8 @@ public class MonthView implements Month {
   private MonthListener listener;
   
   private UserBean user;
-  private GregorianCalendar startDate;
-  private GregorianCalendar endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
   
   private GridPane calendar;
   private Map<LocalDate, List<EventBean>> events;
@@ -55,11 +55,17 @@ public class MonthView implements Month {
     calendar.setHgap(10);
     calendar.setVgap(10);
     
-    startDate = new GregorianCalendar(currentYear, currentMonth,
+    GregorianCalendar start = new GregorianCalendar(currentYear, currentMonth,
         1 - firstDayOfMonth + 1);
-    endDate = new GregorianCalendar(currentYear, currentMonth,
-        1 - firstDayOfMonth + (CALENDAR_ROWS * CALENDAR_COLUMNS));
+    startDate = LocalDate.of(start.get(GregorianCalendar.YEAR),
+        start.get(GregorianCalendar.MONTH)+1,
+        start.get(GregorianCalendar.DATE));
     
+    GregorianCalendar end = new GregorianCalendar(currentYear, currentMonth,
+        1 - firstDayOfMonth + (CALENDAR_ROWS * CALENDAR_COLUMNS));
+    endDate = LocalDate.of(end.get(GregorianCalendar.YEAR),
+        end.get(GregorianCalendar.MONTH)+1,
+        end.get(GregorianCalendar.DATE));
   }
   
   
