@@ -35,6 +35,7 @@ public class DayView implements Day {
   private VBox eventsLayout;
   private VBox layout;
   private List<EventBean> events;
+  private List<Label> eventLabels;
 
 
   public DayView(final UserBean user, int currentMonth, final GregorianCalendar gregorianCalendar) {
@@ -88,12 +89,11 @@ public class DayView implements Day {
    * labels to the day.
    */
   private void addEvents() {
-    listener.getEvents();
-
     // only add events if there are some
     if (events != null) {
       for (final EventBean eventBean : events) {
         Label eventLabel = new Label(eventBean.getTitle());
+        eventLabels.add(eventLabel);
         eventLabel.setOnMouseClicked(new EventHandler<Event>() {
           @Override
           public void handle(Event event) {
@@ -135,6 +135,11 @@ public class DayView implements Day {
   @Override
   public LocalDate getLocalDate() {
     return date;
+  }
+  
+  
+  public void deleteEvent(EventBean event) {
+    events.remove(event);
   }
 
 }
