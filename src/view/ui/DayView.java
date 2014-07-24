@@ -13,6 +13,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -37,6 +39,7 @@ public class DayView implements Day {
   private LocalDate date;
 
   private VBox eventsLayout;
+  
   private VBox layout;
   private Map<EventBean, Label> eventsMap;
   private List<EventBean> events;
@@ -56,12 +59,17 @@ public class DayView implements Day {
 
     eventsLayout = new VBox(3);
     eventsLayout.setStyle("-fx-font-size: 10px");
+    
+    ScrollPane eventsScrollPane = new ScrollPane();
+    eventsScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+    eventsScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    eventsScrollPane.setContent(eventsLayout);
 
     // create the box
     layout = new VBox();
     layout.setPadding(new Insets(2));
-    layout.getChildren().addAll(dayLabel, eventsLayout);
-
+    layout.getChildren().addAll(dayLabel, eventsScrollPane);
+    
     // styling for the day
     String style = "-fx-border: 2px solid; -fx-border-color: blue;";
 
