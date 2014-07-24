@@ -86,8 +86,8 @@ public class DayView implements Day {
     }
 
     layout.setStyle(style);
-    layout.setMinSize(120, 85);
-    layout.setMaxSize(120, 85);
+    layout.setMinSize(130, 90);
+    layout.setMaxSize(130, 90);
 
   }
 
