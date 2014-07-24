@@ -81,10 +81,8 @@ public class MonthView implements Month {
       // add each Day and its Listener to the list
       Day day = new DayView(user, currentMonth, date);
       DayPresenter dayPresenter = new DayPresenter(day);
-      day.setDayListener(dayPresenter);
-      
       day.setEvents(events.get(day.getLocalDate()));
-      
+      day.setDayListener(dayPresenter);
       days.add(day);
     }
 

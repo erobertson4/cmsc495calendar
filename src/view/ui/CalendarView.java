@@ -197,6 +197,9 @@ public class CalendarView implements Calendar {
     yearComboBox.setValue(newYear);
 
     month = new MonthView(user, gregorianCalendar);
+    MonthPresenter monthPresenter = new MonthPresenter(month);
+    month.setMonthListener(monthPresenter);
+    
     layout.getChildren().add(month.getCalendar());
     layout.getChildren().set(0, monthYearDisplayedLabel);
   }

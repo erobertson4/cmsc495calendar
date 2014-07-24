@@ -4,6 +4,7 @@
 package view.ui;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class DayView implements Day {
     date = LocalDate.of(gregorianCalendar.get(GregorianCalendar.YEAR),
         gregorianCalendar.get(GregorianCalendar.MONTH)+1,
         gregorianCalendar.get(GregorianCalendar.DATE));
+    
+    eventLabels = new ArrayList<Label>();
     
     Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
 
