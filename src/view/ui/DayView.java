@@ -30,7 +30,7 @@ public class DayView implements Day {
   private DayListener listener;
   private final UserBean user;
   private final GregorianCalendar gregorianCalendar;
-  private final LocalDate date;
+  private LocalDate date;
 
   private VBox eventsLayout;
   private VBox layout;
@@ -42,9 +42,9 @@ public class DayView implements Day {
     this.user = user;
     this.gregorianCalendar = gregorianCalendar;
     date = LocalDate.of(gregorianCalendar.get(GregorianCalendar.YEAR),
-        gregorianCalendar.get(GregorianCalendar.MONTH),
-        gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
-
+        gregorianCalendar.get(GregorianCalendar.MONTH)+1,
+        gregorianCalendar.get(GregorianCalendar.DATE));
+    
     Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
 
     eventsLayout = new VBox(3);
