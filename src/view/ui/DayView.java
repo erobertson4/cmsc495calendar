@@ -3,6 +3,7 @@
  */
 package view.ui;
 
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -27,8 +28,9 @@ import view.type.Day;
 public class DayView implements Day {
 
   private DayListener listener;
-  private final GregorianCalendar gregorianCalendar;
   private final UserBean user;
+  private final GregorianCalendar gregorianCalendar;
+  private final LocalDate date;
 
   private VBox eventsLayout;
   private VBox layout;
@@ -39,6 +41,9 @@ public class DayView implements Day {
 
     this.user = user;
     this.gregorianCalendar = gregorianCalendar;
+    date = LocalDate.of(gregorianCalendar.get(GregorianCalendar.YEAR),
+        gregorianCalendar.get(GregorianCalendar.MONTH),
+        gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
 
     Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
 
@@ -124,6 +129,12 @@ public class DayView implements Day {
   @Override
   public GregorianCalendar getGregorianCalendar() {
     return gregorianCalendar;
+  }
+
+
+  @Override
+  public LocalDate getLocalDate() {
+    return date;
   }
 
 }

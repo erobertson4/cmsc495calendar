@@ -3,6 +3,7 @@
  */
 package view.type;
 
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -78,5 +79,8 @@ public interface Day {
    * @return the GregorianCalendar whose value is set to the Day.
    */
   GregorianCalendar getGregorianCalendar();
+
+
+  LocalDate getLocalDate();
 
 }

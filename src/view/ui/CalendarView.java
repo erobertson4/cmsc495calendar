@@ -19,7 +19,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.bean.UserBean;
+import presenter.MonthPresenter;
 import view.type.Calendar;
+import view.type.Month;
 
 /**
  * GUI class for the Calendar. Displays one month at a time. Initializes to the
@@ -159,8 +161,10 @@ public class CalendarView implements Calendar {
     controlsLayout.getChildren().add(stack);
     HBox.setHgrow(stack, Priority.ALWAYS);
 
-    month = new Month(user, gregorianCalendar);
-
+    month = new MonthView(user, gregorianCalendar);
+    MonthPresenter monthPresenter = new MonthPresenter(month);
+    month.setMonthListener(monthPresenter);
+    
     monthYearDisplayedLabel = new Label(currentMonthString + " " + currentYear);
     monthYearDisplayedLabel.setStyle("-fx-font-size: 20px");
 
@@ -192,7 +196,7 @@ public class CalendarView implements Calendar {
     monthComboBox.setValue(MONTHS_OF_YEAR[newMonth]);
     yearComboBox.setValue(newYear);
 
-    month = new Month(user, gregorianCalendar);
+    month = new MonthView(user, gregorianCalendar);
     layout.getChildren().add(month.getCalendar());
     layout.getChildren().set(0, monthYearDisplayedLabel);
   }

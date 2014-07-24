@@ -70,7 +70,7 @@ public class EventScreenView implements EventScreen {
   private final String PM = "PM";
 
 
-  public EventScreenView(final EventBean event, UserBean user) {
+  public EventScreenView(final EventBean event, final UserBean user) {
     stage = new Stage();
 
     // if the event passed in is null, this is a new event.
