@@ -117,6 +117,7 @@ public class LoginScreenView implements LoginScreen {
     // create scene
     Scene scene = new Scene(loginGridPane);
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.setTitle("Login");
   }
 

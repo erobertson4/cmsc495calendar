@@ -165,16 +165,20 @@ public class CalendarView implements Calendar {
     MonthPresenter monthPresenter = new MonthPresenter(month);
     month.setMonthListener(monthPresenter);
     
+    
     monthYearDisplayedLabel = new Label(currentMonthString + " " + currentYear);
     monthYearDisplayedLabel.setStyle("-fx-font-size: 20px");
+    VBox monthYearLayout = new VBox(monthYearDisplayedLabel);
+    monthYearLayout.setAlignment(Pos.CENTER);
 
-    layout = new VBox();
+    layout = new VBox(10);
     layout.setPadding(new Insets(10));
-    layout.getChildren().addAll(monthYearDisplayedLabel, controlsLayout,
+    layout.getChildren().addAll(monthYearLayout, controlsLayout,
         month.getCalendar());
 
     // create and show screen
     Scene scene = new Scene(layout);
+    stage.setResizable(false);
     stage.setScene(scene);
     stage.setTitle("Calendar");
   }

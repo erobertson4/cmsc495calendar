@@ -155,6 +155,7 @@ public class NewUserScreenView implements NewUserScreen {
     // create and show screen
     Scene scene = new Scene(newUserGridPane);
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.setTitle("Create Account");
   }
 

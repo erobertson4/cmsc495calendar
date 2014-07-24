@@ -54,8 +54,8 @@ public class MonthView implements Month {
     firstDayOfMonth = gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK);
 
     calendar = new GridPane();
-    calendar.setHgap(10);
-    calendar.setVgap(10);
+    calendar.setHgap(3);
+    calendar.setVgap(3);
     
     GregorianCalendar start = new GregorianCalendar(currentYear, currentMonth,
         1 - firstDayOfMonth + 1);
