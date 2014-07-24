@@ -5,19 +5,22 @@ package presenter;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Time;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import dbConnection.DBConnect;
+import java.util.List;
+
 import model.bean.EventBean;
+import view.type.Day;
 import view.type.EventScreen;
 import view.type.EventScreen.EventListener;
+import view.type.Month;
+import dbConnection.DBConnect;
 
 /**
  * Presenter class for EventScreen. Controls interaction between this GUI
@@ -29,6 +32,8 @@ import view.type.EventScreen.EventListener;
 public class EventScreenPresenter implements EventListener {
 
   private EventScreen eventScreen;
+  private Month month;
+  private Day day;
   
   private int dbID;
   private String dbTitle;
@@ -57,8 +62,10 @@ public class EventScreenPresenter implements EventListener {
   
   private EventBean newEvent;  
   
-  public EventScreenPresenter(EventScreen eventScreen) {
+  public EventScreenPresenter(EventScreen eventScreen, Month month, Day day) {
     this.eventScreen = eventScreen;
+    this.day = day;
+    this.month = month;;
   }
 
 
@@ -267,7 +274,19 @@ public class EventScreenPresenter implements EventListener {
 	                  + "closing the data source!");
 	      } // end catch
 	  } // end finally =============================================================
-
+	  
+	  // remove the event from the GUI and then add it if it belongs back on the screen
+	  if (day != null) {
+	    day.removeEvent(event);
+	  }
+	  
+    List<Day> days = month.getDays();
+    for (int index = 0; index < days.size(); index++) {
+      if (days.get(index).getLocalDate().equals(event.getDate())) {
+        month.getDays().get(index).saveEvent(event);
+        break;
+      }
+    }
   }
 
 
@@ -317,5 +336,6 @@ public class EventScreenPresenter implements EventListener {
 		                  + "closing the data source!");
 		      } // end catch
 	  } // end finally =============================================================
+	  day.removeEvent(event);
   }
 }

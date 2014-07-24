@@ -25,4 +25,8 @@ public interface Month {
   void setMonthListener(MonthListener listener);
 
   void setEvents(Map<LocalDate, List<EventBean>> events);
+
+  Map<LocalDate, List<EventBean>> getEvents();
+
+  List<Day> getDays();
 }

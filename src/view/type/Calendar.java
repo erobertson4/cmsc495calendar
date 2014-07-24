@@ -55,4 +55,7 @@ public interface Calendar {
    */
   void hideCalendar();
 
+
+  Month getMonth();
+
 }

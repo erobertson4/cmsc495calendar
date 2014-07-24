@@ -42,7 +42,7 @@ public class CalendarPresenter implements CalendarListener {
   @Override
   public void createNewEvent(UserBean user) {
     EventScreen eventScreen = new EventScreenView(null, user);
-    EventScreenPresenter eventScreenPresenter = new EventScreenPresenter(eventScreen);
+    EventScreenPresenter eventScreenPresenter = new EventScreenPresenter(eventScreen, calendar.getMonth(), null);
     eventScreen.setEventListener(eventScreenPresenter);
     
     eventScreen.showEventScreen();

@@ -83,4 +83,10 @@ public interface Day {
 
   LocalDate getLocalDate();
 
+
+  void removeEvent(EventBean event);
+
+
+  void saveEvent(EventBean event);
+
 }

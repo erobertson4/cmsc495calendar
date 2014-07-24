@@ -37,7 +37,9 @@ public class MonthView implements Month {
   private LocalDate endDate;
   
   private GridPane calendar;
+  
   private Map<LocalDate, List<EventBean>> events;
+  private List<Day> days;
   
   private int currentMonth;
   private int currentYear;
@@ -73,14 +75,14 @@ public class MonthView implements Month {
     listener.getEvents(startDate, endDate);
     
     // create a list of 42 days to be displayed in this calendar
-    List<Day> days = new ArrayList<Day>();
+    days = new ArrayList<Day>();
     for (int index = 1; index <= CALENDAR_ROWS * CALENDAR_COLUMNS; index++) {
       GregorianCalendar date = new GregorianCalendar(currentYear, currentMonth,
           index - firstDayOfMonth + 1);
       
       // add each Day and its Listener to the list
       Day day = new DayView(user, currentMonth, date);
-      DayPresenter dayPresenter = new DayPresenter(day);
+      DayPresenter dayPresenter = new DayPresenter(day, this);
       day.setEvents(events.get(day.getLocalDate()));
       day.setDayListener(dayPresenter);
       days.add(day);
@@ -112,6 +114,18 @@ public class MonthView implements Month {
   @Override
   public GridPane getCalendar() {
     return calendar;
+  }
+
+  
+  @Override
+  public List<Day> getDays() {
+    return days;
+  }
+
+
+  @Override
+  public Map<LocalDate, List<EventBean>> getEvents() {
+    return events;
   }
 
 

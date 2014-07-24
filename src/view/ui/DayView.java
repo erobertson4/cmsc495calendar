@@ -4,9 +4,10 @@
 package view.ui;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,8 +36,8 @@ public class DayView implements Day {
 
   private VBox eventsLayout;
   private VBox layout;
+  private Map<EventBean, Label> eventsMap;
   private List<EventBean> events;
-  private List<Label> eventLabels;
 
 
   public DayView(final UserBean user, int currentMonth, final GregorianCalendar gregorianCalendar) {
@@ -47,7 +48,7 @@ public class DayView implements Day {
         gregorianCalendar.get(GregorianCalendar.MONTH)+1,
         gregorianCalendar.get(GregorianCalendar.DATE));
     
-    eventLabels = new ArrayList<Label>();
+    eventsMap = new HashMap<EventBean, Label>();
     
     Label dayLabel = new Label(String.valueOf(gregorianCalendar.get(GregorianCalendar.DATE)));
 
@@ -94,19 +95,23 @@ public class DayView implements Day {
   private void addEvents() {
     // only add events if there are some
     if (events != null) {
-      for (final EventBean eventBean : events) {
-        Label eventLabel = new Label(eventBean.getTitle());
-        eventLabels.add(eventLabel);
-        eventLabel.setOnMouseClicked(new EventHandler<Event>() {
-          @Override
-          public void handle(Event event) {
-            // Call to DayPresenter to open the event window for this event and user
-            listener.showEventScreen(eventBean, user);
-          }
-        });
-        eventsLayout.getChildren().add(eventLabel);
+      for (EventBean event : events) {
+        addEvent(event);
       }
     }
+  }
+  
+  private void addEvent(final EventBean eventBean) {
+    Label eventLabel = new Label(eventBean.getTitle());
+    eventsMap.put(eventBean, eventLabel);
+    eventLabel.setOnMouseClicked(new EventHandler<Event>() {
+      @Override
+      public void handle(Event event) {
+        // Call to DayPresenter to open the event window for this event and user
+        listener.showEventScreen(eventBean, user);
+      }
+    });
+    eventsLayout.getChildren().add(eventLabel);
   }
 
 
@@ -141,17 +146,21 @@ public class DayView implements Day {
   }
   
   
-  public void deleteEvent(EventBean event) {
-    events.remove(event);
-    
-    Label deletedLabel = null;
-    for (Label label : eventLabels) {
-      if (event.getTitle().equals(label.getText())) {
-        deletedLabel = label;
-      }
+  @Override
+  public void saveEvent(EventBean event) {
+    addEvent(event);
+  }
+  
+  
+  @Override
+  public void removeEvent(EventBean event) {
+    if (events != null) {
+      events.remove(event);
     }
     
-    eventLabels.remove(deletedLabel);
+    Label deletedLabel = eventsMap.get(event);
+    eventsMap.remove(event);
+    
     eventsLayout.getChildren().remove(deletedLabel);
     
   }

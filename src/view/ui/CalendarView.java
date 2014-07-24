@@ -248,6 +248,12 @@ public class CalendarView implements Calendar {
     }
 
   }
+  
+  
+  @Override
+  public Month getMonth() {
+    return month;
+  }
 
 
   @Override
