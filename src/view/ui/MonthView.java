@@ -126,7 +126,6 @@ public class MonthView implements Month {
   @Override
   public void setMonthListener(MonthListener listener) {
     this.listener = listener;
-    System.out.println("Hello");
     createDays();
   }
 
