@@ -121,24 +121,7 @@ public class MonthPresenter implements MonthListener {
             dbEam = rset.getBoolean("EAM");
             dbAllDay = rset.getBoolean("ALLDAY");
             dbMessage = rset.getString("MESSAGE");
-            
-            
-            //          [TESTING ONLY - get database values and print to output                
-            System.out.println( dbId + "\n"
-            	+ dbTitle + "\n"
-    			+ dbCreatorId + "\n"
-    			+ dbSDate + "\n"
-    			+ dbSHour + "\n"
-    			+ dbSMin + "\n"
-    			+ dbEHour + "\n"
-    			+ dbEMin + "\n"
-    			+ dbSam + "\n"
-    			+ dbEam + "\n"
-    			+ dbAllDay + "\n"
-    			+ dbMessage + "\n\n" );
-            
 
-        
             //create EventBean with values from database
             dayEvent = new EventBean();
             dayEvent.setId(dbId);

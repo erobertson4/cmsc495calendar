@@ -139,7 +139,6 @@ public class EventScreenPresenter implements EventListener {
 			  if(rs.next())
 				  eventSEQ = rs.getInt(1);
 		  }
-
 		  
 		  prepStmt.close();
 		  conn.close();
@@ -174,80 +173,72 @@ public class EventScreenPresenter implements EventListener {
 	  //============================================================================
 	  try {
 		  conn = DBConnect.connect();
-		  stmt = conn.createStatement();
 		  
 		  // if new record (which will = 0) do insert, if existing do update
 		  if (dbID == 0){
 			  // add new event
+			  String SQL2 = "INSERT INTO EVENT_T "
+					  + "(ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, "
+					  + "EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) "
+					  + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-			  // if event is allDay
-			  if (allDay != 1) {
-				  // insert start and end times
-				  SQL = "INSERT INTO EVENT_T "
-				  		+ "(ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, "
-				  		+ "EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) "
-				  		+ "VALUES(" + eventSEQ + ", '"
-				  		+ dbTitle + "', " 
-				  		+ dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), " 
-				  		+ dbSHour + ", "  
-				  		+ dbSMin + ", " 
-				  		+ dbEHour + ", " 
-				  		+ dbEMin + ", " 
-				  		+ sAM + ", " 
-				  		+ eAM + ", " 
-				  		+ allDay + ", '" 
-				  		+ dbMessage + "')"; 
-			  } else {
-				  // insert as all day event
-				  System.out.println("This is uesr ID:" + dbCreatorID);
-				  SQL = "INSERT INTO EVENT_T "
-				  		+ "(ID, TITLE, CREATORID, SDATE, SHOUR, SMIN, "
-				  		+ "EHOUR, EMIN, SAM, EAM, ALLDAY, MESSAGE) "
-				  		+ "VALUES(" + eventSEQ + ", '" 
-				  		+ dbTitle + "', " 
-				  		+ dbCreatorID + ", TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'), "
-				  		+ "'', '', '', '', '', '', "  
-				  		+ allDay + ", '" 
-				  		+ dbMessage + "')"; 
-			  } // end if: allDay
+				  prepStmt = conn.prepareStatement(SQL2);
+				  
+				  prepStmt.clearParameters();
+				  prepStmt.setInt(1, eventSEQ);
+				  prepStmt.setString(2, dbTitle);
+				  prepStmt.setInt(3, dbCreatorID);
+				  prepStmt.setDate(4, dbSDate);
+				  prepStmt.setInt(5, dbSHour);
+				  prepStmt.setInt(6, dbSMin);
+				  prepStmt.setInt(7, dbEHour);
+				  prepStmt.setInt(8, dbEMin);
+				  prepStmt.setInt(9, sAM);
+				  prepStmt.setInt(10, eAM);
+				  prepStmt.setInt(11, allDay);
+				  prepStmt.setString(12, dbMessage);
+				  prepStmt.executeUpdate();
+				  
+				  prepStmt.close();
+				  conn.close();
+				  
 		  } else {
 			  // update record
-			  if (allDay != 1) {
+			 String SQL3 = "UPDATE EVENT_T SET "
+			  		+ "TITLE = ?, "
+			  		+ "CreatorID = ?, "
+			  		+ "SDATE = ?, "
+			  		+ "SHOUR = ?, "
+			  		+ "SMIN = ?, "
+			  		+ "EHOUR = ?, "
+			  		+ "EMIN = ?, "
+			  		+ "SAM = ?, "
+			  		+ "EAM = ?, "
+			  		+ "ALLDAY = ?,"
+			  		+ "MESSAGE = ? "
+			  		+ "WHERE ID = ?";
 				  
-				  // update with start and end times
-				  SQL = "UPDATE EVENT_T SET "
-						+ "TITLE = '" + dbTitle + "', "
-						+ "SDATE = TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'),"
-						+ "SHOUR = " + dbSHour + ", " 
-						+ "SMIN = " + dbSMin + ", "
-						+ "EHOUR = " + dbEHour + ", "
-						+ "EMIN = " + dbEMin + ", "
-						+ "SAM = " + sAM + ", "
-						+ "eAM = " + eAM + ", "
-						+ "ALLDAY = " + allDay + ", "
-					    + "MESSAGE = '" + dbMessage + "' WHERE ID = " + dbID + " ";
-			  }  else {
-				  // update as all day event
-				  SQL = "UPDATE EVENT_T SET "
-						+ "TITLE = '" + dbTitle + "', "
-						+ "SDATE = TO_DATE('" + dbSDate + "', 'YYYY-MM-DD'),"
-						+ "SHOUR = '', " 
-						+ "SMIN = '', " 
-						+ "EHOUR = '', " 
-						+ "EMIN = '', " 
-						+ "SAM = '', " 
-						+ "eAM = '', " 
-						+ "ALLDAY = " + allDay + ", "
-						+ "MESSAGE = '" + dbMessage + "' WHERE ID = " + dbID + " ";
-			  } // end if: allDay
-		  } // end else
-		  
-		  
-		  stmt.executeUpdate(SQL);
+				  prepStmt = conn.prepareStatement(SQL3);
+				  
+				  prepStmt.clearParameters();
+				  prepStmt.setString(1, dbTitle);
+				  prepStmt.setInt(2, dbCreatorID);
+				  prepStmt.setDate(3, dbSDate);
+				  prepStmt.setInt(4, dbSHour);
+				  prepStmt.setInt(5, dbSMin);
+				  prepStmt.setInt(6, dbEHour);
+				  prepStmt.setInt(7, dbEMin);
+				  prepStmt.setInt(8, sAM);
+				  prepStmt.setInt(9, eAM);
+				  prepStmt.setInt(10, allDay);
+				  prepStmt.setString(11, dbMessage);
+				  prepStmt.setInt(12, dbID);
+				  prepStmt.executeUpdate();
+				  
+				  prepStmt.close();
+				  conn.close();
 
-		  stmt.close();
-		  conn.close();
-		  		  
+		  } // end else
 		 
 	  } // end try block
 	  
@@ -268,7 +259,7 @@ public class EventScreenPresenter implements EventListener {
 	  finally {    
 	      try {
 	        
-	          if(stmt != null) stmt.close();
+	          if(prepStmt != null) prepStmt.close();
 	          if(conn != null) conn.close();
 	      }
 	  catch(SQLException ex) {
