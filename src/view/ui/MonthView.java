@@ -3,9 +3,11 @@
  */
 package view.ui;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -35,7 +37,7 @@ public class MonthView implements Month {
   private GregorianCalendar endDate;
   
   private GridPane calendar;
-  private List<EventBean> events;
+  private Map<LocalDate, List<EventBean>> events;
   
   private int currentMonth;
   private int currentYear;
@@ -75,15 +77,7 @@ public class MonthView implements Month {
       DayPresenter dayPresenter = new DayPresenter(day);
       day.setDayListener(dayPresenter);
       
-      List<EventBean> eventsForDay = new ArrayList<EventBean>();
-      
-      for (EventBean eventBean : events) {
-        if (eventBean.getDate().equals(day.getLocalDate())) {
-          eventsForDay.add(eventBean);
-        }
-      }
-      
-      day.setEvents(eventsForDay);
+      day.setEvents(events.get(day.getLocalDate()));
       
       days.add(day);
     }
@@ -118,7 +112,7 @@ public class MonthView implements Month {
 
 
   @Override
-  public void setEvents(List<EventBean> events) {
+  public void setEvents(Map<LocalDate, List<EventBean>> events) {
     this.events = events;
   }
 
@@ -126,6 +120,7 @@ public class MonthView implements Month {
   @Override
   public void setMonthListener(MonthListener listener) {
     this.listener = listener;
+    System.out.println("Hello");
     createDays();
   }
 

@@ -3,8 +3,10 @@
  */
 package view.type;
 
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import javafx.scene.layout.GridPane;
 import model.bean.EventBean;
@@ -21,7 +23,7 @@ public interface Month {
   
   GridPane getCalendar();
   
-  void setEvents(List<EventBean> events);
-
   void setMonthListener(MonthListener listener);
+
+  void setEvents(Map<LocalDate, List<EventBean>> events);
 }
