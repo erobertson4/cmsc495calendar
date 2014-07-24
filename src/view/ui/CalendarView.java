@@ -207,6 +207,7 @@ public class CalendarView implements Calendar {
     
     layout.getChildren().add(month.getCalendar());
     layout.getChildren().set(0, monthYearDisplayedLabel);
+    layout.setAlignment(Pos.CENTER);
   }
 
 
