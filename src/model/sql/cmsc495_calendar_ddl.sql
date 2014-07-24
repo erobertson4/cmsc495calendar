@@ -48,7 +48,7 @@ CREATE TABLE USER_T
 -- CREATE EVENT TABLE
 -- ===================================================
 CREATE TABLE EVENT_T
-    (ID                	NUMBER(6)     	NOT NULL
+    (ID                	NUMBER(9)     	NOT NULL
     ,TITLE             	VARCHAR2(50)    NOT NULL
     ,CREATORID     		NUMBER(6)     	NOT NULL
     ,SDATE	         	DATE     		NOT NULL
@@ -68,7 +68,7 @@ CREATE TABLE EVENT_T
 -- ===================================================
 
 CREATE SEQUENCE USER_SEQ
-    INCREMENT BY 1
+    INCREMENT BY 1.
     START WITH 15
     NOMAXVALUE
     MINVALUE 1
