@@ -242,6 +242,7 @@ public class EventScreenView implements EventScreen {
         }
 
         listener.save(newEvent);
+        listener.hide();
       }
     });
 
@@ -258,6 +259,7 @@ public class EventScreenView implements EventScreen {
       @Override
       public void handle(ActionEvent actionEvent) {
         listener.delete(event);
+        listener.hide();
       }
     });
 
