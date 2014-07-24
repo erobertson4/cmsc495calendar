@@ -11,7 +11,9 @@ import java.util.Map;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.bean.EventBean;
@@ -55,10 +57,12 @@ public class DayView implements Day {
     eventsLayout = new VBox(3);
     eventsLayout.setStyle("-fx-font-size: 10px");
 
+    // create the box
     layout = new VBox();
+    layout.setPadding(new Insets(2));
     layout.getChildren().addAll(dayLabel, eventsLayout);
 
-    // some initial styling, to complete later
+    // styling for the day
     String style = "-fx-border: 2px solid; -fx-border-color: blue;";
 
     int dayOfWeek = gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK);
@@ -74,17 +78,9 @@ public class DayView implements Day {
     }
 
     layout.setStyle(style);
-    layout.setMinSize(80, 80);
-    layout.setMaxSize(80, 80);
+    layout.setMinSize(120, 85);
+    layout.setMaxSize(120, 85);
 
-    layout.setOnMouseClicked(new EventHandler<Event>() {
-      @Override
-      public void handle(Event event) {
-        System.out.println("Day clicked is " + (gregorianCalendar.get(GregorianCalendar.MONTH) + 1)
-            + " / " + gregorianCalendar.get(GregorianCalendar.DATE) + " / "
-            + gregorianCalendar.get(GregorianCalendar.YEAR));
-      }
-    });
   }
 
 
@@ -101,9 +97,15 @@ public class DayView implements Day {
     }
   }
   
+  
+  /**
+   * Add the event to the map of events and to the GUI.
+   * @param eventBean the event to be added
+   */
   private void addEvent(final EventBean eventBean) {
     Label eventLabel = new Label(eventBean.getTitle());
     eventsMap.put(eventBean, eventLabel);
+    Tooltip.install(eventLabel, new Tooltip(eventLabel.getText()));
     eventLabel.setOnMouseClicked(new EventHandler<Event>() {
       @Override
       public void handle(Event event) {
