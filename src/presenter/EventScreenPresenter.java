@@ -247,43 +247,7 @@ public class EventScreenPresenter implements EventListener {
 
 		  stmt.close();
 		  conn.close();
-		// =======================================================================
-		// DO NOT DELETE PREPAREDSTATEMENT CODE BELOW!!
-		//========================================================================
-			/*String sqlInsert = "INSERT INTO EVENT_T("
-				+ "ID,"
-		  		+ "TITLE,"
-		  		+ "CREATORID,"
-		  		+ "SDATE,"
-		  		+ "SHOUR,"
-		  		+ "SMIN,"
-		  		+ "EHOUR,"
-		  		+ "EMIN, "
-		  		+ "SAM"
-		  		+ "EAM,"
-		  		+ "ALLDAY,"
-		  		+ "MESSAGE)"
-		  		+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"; 
-			
-			prepStmt = conn.prepareStatement(sqlInsert);
-		  
-		  prepStmt.setInt(1, eventSEQ);
-		  prepStmt.setString(2, newEvent.getTitle());
-		  prepStmt.setInt(3, newEvent.getCreatorId());
-		  prepStmt.setDate(4, TO_DATE(dbSDate , 'YYYY-MM-DD')); // could not get this line to work!!
-		  prepStmt.setInt(5, newEvent.getStartHour());
-		  prepStmt.setInt(6, newEvent.getStartMinute());
-		  prepStmt.setInt(7, newEvent.getEndHour());
-		  prepStmt.setInt(8, newEvent.getEndMinute());
-		  prepStmt.setInt(9, dbSam);
-		  prepStmt.setInt(10, dbEam);
-		  prepStmt.setInt(11, dbAllDay);
-		  prepStmt.setString(12, newEvent.getDescription());
-		  prepStmt.executeUpdate();
-		  
-		  prepStmt.close(); */
-		  
-		  
+		  		  
 		 
 	  } // end try block
 	  
