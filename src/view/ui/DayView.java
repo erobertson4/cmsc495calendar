@@ -140,6 +140,17 @@ public class DayView implements Day {
   
   public void deleteEvent(EventBean event) {
     events.remove(event);
+    
+    Label deletedLabel = null;
+    for (Label label : eventLabels) {
+      if (event.getTitle().equals(label.getText())) {
+        deletedLabel = label;
+      }
+    }
+    
+    eventLabels.remove(deletedLabel);
+    eventsLayout.getChildren().remove(deletedLabel);
+    
   }
 
 }
