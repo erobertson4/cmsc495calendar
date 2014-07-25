@@ -3,21 +3,23 @@
  */
 package presenter;
 
-import dbConnection.DBConnect;
-import java.sql.*;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
+
 import model.bean.UserBean;
+
+import org.controlsfx.dialog.Dialogs;
+
 import view.type.Calendar;
 import view.type.LoginScreen;
 import view.type.LoginScreen.LoginListener;
 import view.type.NewUserScreen;
 import view.ui.CalendarView;
 import view.ui.NewUserScreenView;
-import org.controlsfx.dialog.Dialogs;
-import javafx.stage.Stage;
+import dbConnection.DBConnect;
 
 /**
  * Presenter class for LoginScreen. Controls interaction between this GUI
@@ -46,8 +48,6 @@ public class LoginPresenter implements LoginListener {
 
   // create collection object for user data
   private UserBean newUser;
-
-  private Stage stage;
 
 
   public LoginPresenter(LoginScreen loginScreen) {
@@ -108,7 +108,7 @@ public class LoginPresenter implements LoginListener {
     catch (SQLException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Cannot Connect to Database")
           .message(
               "Cannot connect to database. Please try again. If problem persists,"
@@ -129,7 +129,7 @@ public class LoginPresenter implements LoginListener {
           stmt.close();
       }
       catch (SQLException ex) {
-        Dialogs.create().owner(stage).title("Error Closing Datasource")
+        Dialogs.create().owner(null).title("Error Closing Datasource")
             .message("There was an error closing the datasource. Please exit the application.")
             .showError();
       } // end catch
@@ -163,7 +163,7 @@ public class LoginPresenter implements LoginListener {
     }
     catch (NullPointerException ex) {
       // if username or password does not match value in database
-      Dialogs.create().owner(stage).title("Invalid Username or Password Entered!")
+      Dialogs.create().owner(null).title("Invalid Username or Password Entered!")
           .message("An invalid username or password was entered. Please try again.").showError();
       loginScreen.showLoginScreen();
     }
