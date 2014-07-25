@@ -3,21 +3,23 @@
  */
 package presenter;
 
-import dbConnection.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
+
 import model.bean.UserBean;
+
 import org.controlsfx.dialog.Dialogs;
+
+import view.type.Calendar;
 import view.type.LoginScreen;
 import view.type.NewUserScreen;
 import view.type.NewUserScreen.NewUserListener;
-import view.ui.LoginScreenView;
-import javafx.stage.Stage;
-import view.type.Calendar;
 import view.ui.CalendarView;
+import view.ui.LoginScreenView;
+import dbConnection.DBConnect;
 
 /**
  * Presenter class for NewUserScreen. Controls interaction between this GUI
@@ -30,8 +32,6 @@ public class NewUserPresenter implements NewUserListener {
 
   private NewUserScreen newUserScreen;
   private UserBean newUser;
-
-  private Stage stage;
 
   // data connection variables
   private Connection conn;
@@ -88,7 +88,7 @@ public class NewUserPresenter implements NewUserListener {
         // if username exists, display error dialog box
         Dialogs
             .create()
-            .owner(stage)
+            .owner(null)
             .title("Invalid Username")
             .message(
                 "The username \"" + dbuserName + "\" belongs to another user."
@@ -118,7 +118,7 @@ public class NewUserPresenter implements NewUserListener {
     catch (SQLException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Cannot Connect to Database")
           .message(
               "Cannot connect to database. Please try again. If problem persists,"
@@ -137,7 +137,7 @@ public class NewUserPresenter implements NewUserListener {
           stmt.close();
       }
       catch (SQLException ex) {
-        Dialogs.create().owner(stage).title("Error Closing Datasource")
+        Dialogs.create().owner(null).title("Error Closing Datasource")
             .message("There was an error closing the datasource. Please exit the application.")
             .showError();
       } // end catch
@@ -171,7 +171,7 @@ public class NewUserPresenter implements NewUserListener {
     catch (NullPointerException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Failure Creating Account")
           .message(
               "Account creation failed. Please try again. If problem persists,"
@@ -181,7 +181,7 @@ public class NewUserPresenter implements NewUserListener {
     catch (SQLException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Cannot Connect to Database")
           .message(
               "Cannot connect to database. Please try again. If problem persists,"
@@ -197,7 +197,7 @@ public class NewUserPresenter implements NewUserListener {
           conn.close();
       }
       catch (SQLException ex) {
-        Dialogs.create().owner(stage).title("Error Closing Datasource")
+        Dialogs.create().owner(null).title("Error Closing Datasource")
             .message("There was an error closing the datasource. Please exit the application.")
             .showError();
       } // end catch
@@ -246,7 +246,7 @@ public class NewUserPresenter implements NewUserListener {
     catch (NullPointerException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Could Not Verify Account")
           .message(
               "Could not verify the new account. Please try again. If problem persists,"
@@ -256,7 +256,7 @@ public class NewUserPresenter implements NewUserListener {
     catch (SQLException ex) {
       Dialogs
           .create()
-          .owner(stage)
+          .owner(null)
           .title("Cannot Connect to Database")
           .message(
               "Cannot connect to database. Please try again. If problem persists,"
@@ -274,7 +274,7 @@ public class NewUserPresenter implements NewUserListener {
           stmt.close();
       }
       catch (SQLException ex) {
-        Dialogs.create().owner(stage).title("Error Closing Datasource")
+        Dialogs.create().owner(null).title("Error Closing Datasource")
             .message("There was an error closing the datasource. Please exit the application.")
             .showError();
       } // end catch
