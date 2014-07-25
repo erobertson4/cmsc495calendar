@@ -361,6 +361,7 @@ public class EventScreenPresenter implements EventListener {
           stmt.close();
         if (conn != null)
           conn.close();
+        day.removeEvent(event);
       }
       catch (SQLException ex) {
         Dialogs.create().owner(null).title("Error Closing Datasource")
@@ -369,6 +370,5 @@ public class EventScreenPresenter implements EventListener {
       } // end catch
     } // end finally
       // =============================================================
-    day.removeEvent(event);
   }
 }
