@@ -11,15 +11,17 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dbConnection.DBConnect;
 import model.bean.EventBean;
 import view.type.Month;
 import view.type.Month.MonthListener;
-import dbConnection.DBConnect;
 
 /**
  * @author elijahr
@@ -100,7 +102,7 @@ public class MonthPresenter implements MonthListener {
 //                + "MESSAGE  
         		+ "FROM EVENT_T "
                 + "WHERE SDATE > TO_DATE('" + sqlSDate + "', 'YYYY-MM-DD') "
-                + "AND SDATE < TO_DATE('" + sqlEDate + "', 'YYYY-MM-DD') ORDER BY SDATE ";
+                + "AND SDATE < TO_DATE('" + sqlEDate + "', 'YYYY-MM-DD') ORDER BY SDATE";
 
         rset = stmt.executeQuery(SQL);
         
