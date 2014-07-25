@@ -183,6 +183,7 @@ public class EventScreenView implements EventScreen {
 
     // TextArea to hold the description of the event
     descriptionTextArea = new TextArea();
+    descriptionTextArea.setWrapText(true);
 
     /*
      * +========================================================+ 
