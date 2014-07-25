@@ -350,6 +350,9 @@ public class EventScreenView implements EventScreen {
    */
   private void addEventScreenValues() {
     titleTextField.setText(newEvent.getTitle());
+    
+    // set the description area to empty string if it is null; caused NPE when
+    // trying to edit the event later
     if (newEvent.getDescription() == null) {
       descriptionTextArea.setText("");
     }
