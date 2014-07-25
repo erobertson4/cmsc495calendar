@@ -89,18 +89,6 @@ public class MonthPresenter implements MonthListener {
       conn = DBConnect.connect();
       stmt = conn.createStatement();
       SQL = "select * "
-          // + "ID, "
-          // + "TITLE, "
-          // + "CREATORID, "
-          // + "SDATE, "
-          // + "SHOUR, "
-          // + "SMIN, "
-          // + "EHOUR, "
-          // + "EMIN, "
-          // + "SAM, "
-          // + "EAM, "
-          // + "ALLDAY, "
-          // + "MESSAGE
           + "FROM EVENT_T " + "WHERE SDATE > TO_DATE('" + sqlSDate + "', 'YYYY-MM-DD') "
           + "AND SDATE < TO_DATE('" + sqlEDate + "', 'YYYY-MM-DD') ORDER BY SDATE ";
 
