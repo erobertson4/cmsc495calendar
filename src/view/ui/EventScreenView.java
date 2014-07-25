@@ -350,7 +350,12 @@ public class EventScreenView implements EventScreen {
    */
   private void addEventScreenValues() {
     titleTextField.setText(newEvent.getTitle());
-    descriptionTextArea.setText(newEvent.getDescription());
+    if (newEvent.getDescription() == null) {
+      descriptionTextArea.setText("");
+    }
+    else {
+      descriptionTextArea.setText(newEvent.getDescription());
+    }
 
     datePicker.setValue(newEvent.getDate());
 
